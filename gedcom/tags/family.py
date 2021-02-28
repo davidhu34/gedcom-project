@@ -1,5 +1,5 @@
 from typing import Optional, List
-from datetime import datetime
+from datetime import date as Date
 from .base import GedcomData, GedcomSubjectData
 from .date import GedcomDateEvent
 from ..exceptions import GedcomInvalidData
@@ -82,14 +82,14 @@ class GedcomFamily(GedcomSubjectData):
         return [self.get_member_id(child) for child in self._children]
 
     @property
-    def marriage(self) -> Optional[datetime]:
-        ''' get datetime object of marriage '''
-        return self._marriage.date
+    def marriage(self) -> Optional[Date]:
+        ''' get Date object of marriage '''
+        return self._marriage.date if self._marriage else None
 
     @property
-    def divorce(self) -> Optional[datetime]:
-        ''' get datetime object of divorce '''
-        return self._divorce.date
+    def divorce(self) -> Optional[Date]:
+        ''' get Date object of divorce '''
+        return self._divorce.date if self._divorce else None
 
     def set_default_values(self) -> None:
         self._husband = None

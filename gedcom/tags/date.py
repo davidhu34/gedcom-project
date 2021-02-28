@@ -1,5 +1,5 @@
 from typing import Dict, Optional
-from datetime import datetime
+from datetime import date as Date
 from .base import GedcomData, GedcomTagOnlyData
 from ..exceptions import GedcomInvalidData
 
@@ -36,14 +36,14 @@ class GedcomDate(GedcomData):
             raise GedcomInvalidData(
                 f'invalid date arguments {d} {mmm} {yyyy}')
 
-        date: int = int(d)
+        day: int = int(d)
         month: int = self.month_map[mmm]
         year: int = int(yyyy)
 
         if not month:
-            raise GedcomInvalidData('invalid date month')
+            raise GedcomInvalidData('invalid day month')
 
-        self.date: datetime = datetime(year, month, date)
+        self.date: Date = Date(year, month, day)
 
         return True
 
@@ -59,9 +59,9 @@ class GedcomDateEvent(GedcomTagOnlyData):
     #         line.validated = True
 
     @property
-    def date(self) -> Optional[datetime]:
-        ''' get datetime object of event '''
-        return self._date.date if self.date else None
+    def date(self) -> Optional[Date]:
+        ''' get date object of event '''
+        return self._date.date if self._date else None
 
     def parse_lines(self) -> bool:
         # no argumets allowed
@@ -71,9 +71,5 @@ class GedcomDateEvent(GedcomTagOnlyData):
         date_line: GedcomLine = self.lines[1]
         date: GedcomDate = GedcomDate([date_line])
 
-        if date.validated:
-            self._date = date
-            return True
-
-        else:
-            return False
+        self._date = date if date.validated else None
+        return bool(self._date)

@@ -1,5 +1,5 @@
 from typing import Optional, List
-from datetime import datetime
+from datetime import date as Date
 from .base import GedcomData, GedcomSubjectData
 from .date import GedcomDateEvent
 from ..exceptions import GedcomInvalidData
@@ -22,7 +22,7 @@ class GedcomIndividualName(GedcomIndividualData):
         if not self.line.arguments:
             raise GedcomInvalidData('single argument required')
 
-        self._name: str = ' '.join(self.line.arguments)
+        self.name: str = ' '.join(self.line.arguments)
 
         return True
 
@@ -44,7 +44,7 @@ class GedcomIndividualSex(GedcomIndividualData):
         if sex not in ('M', 'F'):
             raise GedcomInvalidData('M or F required')
 
-        self._sex: str = sex
+        self.sex: str = sex
 
         return True
 
@@ -106,14 +106,14 @@ class GedcomIndividual(GedcomSubjectData):
         return self._sex.sex
 
     @property
-    def birth(self) -> Optional[datetime]:
-        ''' get individual birth datetime object '''
-        return self._birth.date
+    def birth(self) -> Optional[Date]:
+        ''' get individual birth date object '''
+        return self._birth.date if self._birth else None
 
     @property
-    def death(self) -> Optional[datetime]:
-        ''' get individual death datetime object '''
-        return self._death.date
+    def death(self) -> Optional[Date]:
+        ''' get individual death date object '''
+        return self._death.date if self._death else None
 
     def get_member_of_id(self, member_of: GedcomIndividualMemberOf) -> Optional[str]:
         ''' get the family_id of which this individual is a member of, None if invalid '''

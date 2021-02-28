@@ -1,6 +1,5 @@
 from typing import Any, Optional, Iterator, IO, List, Dict
 from abc import ABCMeta, abstractmethod
-from datetime import datetime
 from ..file import GedcomLine
 from ..exceptions import GedcomDataParsingException, GedcomInvalidData
 

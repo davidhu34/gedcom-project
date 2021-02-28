@@ -1,24 +1,47 @@
-from typing import List, Iterator
+from typing import List, Dict, Iterator, Callable
 from .tags import *
 from .file import GedcomLine, prompt_input_file, get_lines_from_path
 
 
 class GedcomRepository:
     ''' A Repository for GEDCOM file data '''
+    __slots__ = 'lines', '_notes', '_header', '_trailer', '_individual_dict', '_family_dict', '_individual_keys', '_family_keys',
 
     def __init__(self, lines: List[GedcomLine]) -> None:
         ''' construct GedcomRepository '''
         self.parse_and_validate_lines(lines)
 
+    @property
+    def individual(self) -> Dict[str, GedcomIndividual]:
+        ''' get individual id dictionary '''
+        return self._individual_dict
+
+    @property
+    def family(self) -> Dict[str, GedcomFamily]:
+        ''' get family id dictionary '''
+        return self._family_dict
+
+    @property
+    def individuals(self) -> List[GedcomIndividual]:
+        ''' get list of individuals ordered by id '''
+        return [self.individual[id] for id in self._individual_keys]
+
+    @property
+    def families(self) -> List[GedcomFamily]:
+        ''' get list of families ordered by id '''
+        return [self.family[id] for id in self._family_keys]
+
     def reset_containers(self) -> None:
-        self.notes: List[GedcomNotes] = []
-        self.individuals: List[GedcomIndividual] = []
-        self.families: List[GedcomFamily] = []
-        self.individual_dict: Dict[str, GedcomIndividual] = {}
-        self.family_dict: Dict[str, GedcomFamily] = {}
+        self._notes: List[GedcomNotes] = []
+        self._individual_keys: List[GedcomIndividual] = []
+        self._family_keys: List[GedcomFamily] = []
+        self._individual_dict: Dict[str, GedcomIndividual] = {}
+        self._family_dict: Dict[str, GedcomFamily] = {}
 
     def parse_and_validate_lines(self, lines: List[GedcomLine]) -> None:
         ''' get data from lines and validate '''
+
+        # cleanse data
         self.lines: List[GedcomLine] = lines
         self.reset_containers()
 
@@ -38,11 +61,11 @@ class GedcomRepository:
                 try:
                     if tag == 'INDI':
                         individual = GedcomIndividual(data_lines)
-                        individual_dict[individual.id] = individual
+                        self._individual_dict[individual.id] = individual
 
                     if tag == 'FAM':
                         family = GedcomFamily(data_lines)
-                        family_dict[family.id] = family
+                        self._family_dict[family.id] = family
 
                 except:
                     # skip invalid subject(INDI/FaM)
@@ -52,13 +75,13 @@ class GedcomRepository:
             else:
                 try:
                     if tag == 'NOTE':
-                        notes.append(GedcomNote(data_lines))
+                        _notes.append(GedcomNote(data_lines))
 
                     elif tag == 'HEAD':
-                        header = GedcomHeader(data_lines)
+                        _header = GedcomHeader(data_lines)
 
                     elif tag == 'TRLR':
-                        trailer = GedcomTrailer(data_lines)
+                        _trailer = GedcomTrailer(data_lines)
 
                 except:
                     # skip invalid top level tags
@@ -66,6 +89,9 @@ class GedcomRepository:
 
                 i += 1
 
+        # sort individuals and family by key
+        self._individual_keys = sorted(self._individual_dict.keys())
+        self._family_keys = sorted(self._family_dict.keys())
         # end of parse_and_validate_lines
 
     def print_parse_report(self) -> None:
