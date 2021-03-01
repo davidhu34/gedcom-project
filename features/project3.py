@@ -1,8 +1,8 @@
 
 from typing import List
-from gedcom import GedcomRepository, prompt_repository_file
-from prettytable import PrettyTable
 from datetime import date as Date
+from prettytable import PrettyTable
+from gedcom import GedcomRepository, prompt_repository_file
 
 
 def id_list_display(id_list: List[str]) -> str:
@@ -32,7 +32,9 @@ def print_gedcom_info() -> None:
 
     family_fields: List[str] = [
         'ID',
+        'Husband ID',
         'Husband Name',
+        'Wife ID',
         'Wife Name',
     ]
     family_table: PrettyTable = PrettyTable(field_names=family_fields)
@@ -45,7 +47,9 @@ def print_gedcom_info() -> None:
 
         family_table.add_row([
             family.id,
+            family.husband,
             repo.individual[family.husband].name,
+            family.wife,
             repo.individual[family.wife].name,
         ])
 

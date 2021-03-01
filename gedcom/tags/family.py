@@ -74,7 +74,7 @@ class GedcomFamily(GedcomSubjectData):
     @property
     def wife(self) -> Optional[str]:
         ''' get husband individual_id '''
-        return self.get_member_id(self._husband)
+        return self.get_member_id(self._wife)
 
     @property
     def children(self) -> List[str]:

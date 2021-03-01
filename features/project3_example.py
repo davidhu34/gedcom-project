@@ -6,7 +6,16 @@ from datetime import date as Date
 
 
 def id_list_display(id_list: List[str]) -> str:
+    ''' get ID list display '''
+
+    if not id_list:
+        # return NA if
+        return 'NA'
+
+    # ID's are in quotes
+    # join by comma
     content: str = ", ".join([f"'{id}'" for id in id_list])
+    # wrapped by brackets
     return f'{{{content}}}'
 
 
@@ -56,8 +65,8 @@ def print_gedcom_info() -> None:
             age,
             alive,
             f'{death_date}' if death_date else 'NA',
-            id_list_display(children) if children else 'NA',
-            id_list_display(spouses) if spouses else 'NA',
+            id_list_display(children),
+            id_list_display(spouses),
         ])
 
     print('Individuals')
@@ -92,7 +101,7 @@ def print_gedcom_info() -> None:
             husband_name,
             wife_id,
             wife_name,
-            id_list_display(family.children) if spouses else 'NA',
+            id_list_display(family.children),
         ])
 
     print('Families')
