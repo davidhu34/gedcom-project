@@ -6,4 +6,5 @@ from gedcom import GedcomRepository, prompt_repository_file
 if __name__ == "__main__":
     repo: GedcomRepository = prompt_repository_file()
 
-    print_gedcom_info(repo)
+    repo \
+        .showcase(print_gedcom_info)

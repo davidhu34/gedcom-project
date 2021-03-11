@@ -62,24 +62,24 @@ class GedcomFamily(GedcomSubjectData):
     info_tags = 'HUSB', 'WIFE', 'CHIL', 'MARR', 'DIV'
     event_tags = 'MARR', 'DIV'
 
-    def get_member_id(self, member: GedcomFamilyMember) -> Optional[str]:
+    def _get_member_id(self, member: GedcomFamilyMember) -> Optional[str]:
         ''' get member individual_id, None if member is not valid '''
         return member.individual_id if member else None
 
     @property
     def husband(self) -> Optional[str]:
         ''' get husband individual_id '''
-        return self.get_member_id(self._husband)
+        return self._get_member_id(self._husband)
 
     @property
     def wife(self) -> Optional[str]:
         ''' get husband individual_id '''
-        return self.get_member_id(self._wife)
+        return self._get_member_id(self._wife)
 
     @property
     def children(self) -> List[str]:
         ''' get list of children individual_id '''
-        return [self.get_member_id(child) for child in self._children]
+        return [self._get_member_id(child) for child in self._children]
 
     @property
     def marriage(self) -> Optional[Date]:
@@ -98,7 +98,7 @@ class GedcomFamily(GedcomSubjectData):
         self._divorce = None
         self._children: List[GedcomFamilyChild] = []
 
-    def is_member(self, individual_id: str) -> bool:
+    def has_member(self, individual_id: str) -> bool:
         ''' check if individual is in this family '''
         return (self._husband and self._husband.individual_id == individual_id
                 ) or (self._wife and self._wife.individual_id == individual_id
@@ -132,7 +132,7 @@ class GedcomFamily(GedcomSubjectData):
 
             husband = GedcomFamilyHusband(data_lines)
 
-            if self.is_member(husband.individual_id):
+            if self.has_member(husband.individual_id):
                 child.validated = False
                 raise GedcomInvalidData('Duplicate family role for individual')
 
@@ -144,7 +144,7 @@ class GedcomFamily(GedcomSubjectData):
 
             wife = GedcomFamilyWife(data_lines)
 
-            if self.is_member(wife.individual_id):
+            if self.has_member(wife.individual_id):
                 wife.validated = False
                 raise GedcomInvalidData('Duplicate family role for individual')
 
@@ -153,7 +153,7 @@ class GedcomFamily(GedcomSubjectData):
         elif tag == 'CHIL':
             child = GedcomFamilyChild(data_lines)
 
-            if self.is_member(child.individual_id):
+            if self.has_member(child.individual_id):
                 child.validated = False
                 raise GedcomInvalidData('Duplicate family role for individual')
 

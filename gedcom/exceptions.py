@@ -29,3 +29,7 @@ class GedcomInvalidData(GedcomException):
 
 class GedcomDateInvalidFormat(GedcomException):
     pass
+
+
+class GedcomValidationException(GedcomException):
+    pass

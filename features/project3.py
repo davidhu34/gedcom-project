@@ -47,13 +47,6 @@ def print_gedcom_info(repository: GedcomRepository) -> None:
     # add rows from university students
     for individual in repository.individuals:
 
-        birth_date: Date = individual.birth
-        today: Date = Date.today()
-        this_birth_date: Date = Date(
-            today.year, birth_date.month, birth_date.day)
-        age: int = today.year - birth_date.year - \
-            (1 if today < this_birth_date else 0)
-
         death_date: Date = individual.death
         alive: bool = not death_date
 
@@ -69,8 +62,8 @@ def print_gedcom_info(repository: GedcomRepository) -> None:
             individual.id,
             individual.name,
             individual.sex,
-            f'{birth_date}',
-            age,
+            f'{individual.birth}',
+            f'{individual.age}',
             alive,
             optional_string_display(death_date),
             id_list_display(children),

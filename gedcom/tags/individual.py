@@ -106,6 +106,16 @@ class GedcomIndividual(GedcomSubjectData):
         return self._sex.sex
 
     @property
+    def is_male(self) -> Optional[str]:
+        ''' individual is male '''
+        return self.sex == 'M'
+
+    @property
+    def is_female(self) -> Optional[str]:
+        ''' individual is female '''
+        return self.sex == 'F'
+
+    @property
     def birth(self) -> Optional[Date]:
         ''' get individual birth date object '''
         return self._birth.date if self._birth else None
@@ -115,19 +125,39 @@ class GedcomIndividual(GedcomSubjectData):
         ''' get individual death date object '''
         return self._death.date if self._death else None
 
-    def get_member_of_id(self, member_of: GedcomIndividualMemberOf) -> Optional[str]:
+    def age_at(self, date: Date = Date.today()) -> int:
+        ''' get individual age at input date '''
+        birth_date: Date = self.birth
+        this_birth_date: Date = Date(
+            date.year, birth_date.month, birth_date.day)
+
+        return date.year - birth_date.year - \
+            (1 if date < this_birth_date else 0)
+
+    @property
+    def age(self) -> int:
+        ''' get individul age at the moment (today) '''
+        # default: age at today
+        return self.age_at()
+
+    def _get_member_of_id(self, member_of: GedcomIndividualMemberOf) -> Optional[str]:
         ''' get the family_id of which this individual is a member of, None if invalid '''
         return member_of.family_id if member_of else None
 
     @property
     def spouse_of_list(self) -> List[str]:
         ''' get list of family_id which this individual is a spouse '''
-        return [self.get_member_of_id(spouse_of) for spouse_of in self._spouse_of_list]
+        return [self._get_member_of_id(spouse_of) for spouse_of in self._spouse_of_list]
 
     @property
     def child_of_list(self) -> List[str]:
         ''' get list of family_id which this individual is a child '''
-        return [self.get_member_of_id(child_of) for child_of in self._child_of_list]
+        return [self._get_member_of_id(child_of) for child_of in self._child_of_list]
+
+    @property
+    def member_of_list(self) -> List[str]:
+        ''' get list of family_id which this individual is a member '''
+        return [member_of.family_id for member_of in self._child_of_list + self._spouse_of_list]
 
     def set_default_values(self) -> None:
         self._name = None
@@ -137,11 +167,9 @@ class GedcomIndividual(GedcomSubjectData):
         self._child_of_list: List[GedcomIndividualChildOf] = []
         self._spouse_of_list: List[GedcomIndividualSpouseOf] = []
 
-    def is_member(self, family_id: str) -> bool:
+    def is_member_of(self, family_id: str) -> bool:
         ''' check if individual is a member of family'''
-        ofs: List[GedcomIndividualMemberOf] = self._child_of_list + \
-            self._spouse_of_list
-        return [of for of in ofs if of.family_id == family_id]
+        return (family_id in self.member_of_list)
 
     def parse_info_line(self, index: int) -> bool:
         info_line: GedcomLine = self.lines[index]
@@ -181,7 +209,7 @@ class GedcomIndividual(GedcomSubjectData):
         elif tag == 'FAMC':
             child_of = GedcomIndividualChildOf(data_lines)
 
-            if self.is_member(child_of.family_id):
+            if self.is_member_of(child_of.family_id):
                 child_of.validated = False
                 raise GedcomInvalidData(
                     'Duplicate family membership for individual')
@@ -191,7 +219,7 @@ class GedcomIndividual(GedcomSubjectData):
         elif tag == 'FAMS':
             spouse_of = GedcomIndividualSpouseOf(data_lines)
 
-            if self.is_member(spouse_of.family_id):
+            if self.is_member_of(spouse_of.family_id):
                 spouse_of.validated = False
                 raise GedcomInvalidData(
                     'Duplicate family membership for individual')

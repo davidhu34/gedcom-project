@@ -102,6 +102,28 @@ class GedcomRepository:
             print(
                 f'<-- {l.level}|{l.tag}|{l.status}|{" ".join(l.arguments)}')
 
+    def validate(self, validator: Callable[['GedcomRepository'], bool]) -> 'GedcomRepository':
+        ''' run validator on GEDCOM data '''
+        try:
+            result: bool = validator(self)
+        except Exception as e:
+            # catch and print validation error
+            print(e)
+
+        # return self for piping
+        return self
+
+
+    def showcase(self, display: Callable[['GedcomRepository'], None]) -> 'GedcomRepository':
+        ''' display specified GEDCOM data '''
+        try:
+            result: bool = display(self)
+        except Exception as e:
+            # catch unexpected error
+            pass
+
+        # return self for piping
+        return self
 
 def prompt_repository_file(
     prompt_message: str = 'Enter GEDCOM file (i.g. "test.ged" or "./test.ged"): ',
