@@ -1,5 +1,5 @@
 from unittest import TestCase
-from typing import Callable
+from typing import Callable, Optional, List
 from os.path import abspath
 from .repository import GedcomRepository, read_repository_file
 from .exceptions import GedcomValidationException
@@ -21,8 +21,12 @@ class GedcomTestCase(TestCase):
 
     def assert_file_validation_passes(self, file_name: str, validator: Callable) -> None:
         self.prepare_validation_test(file_name, validator)
-        self.assertEqual(True, validator(self.repo))
+        self.assertFalse(validator(self.repo))
 
-    def assert_file_validation_fails(self, file_name: str, validator: Callable) -> None:
+    def assert_file_validation_fails(self, file_name: str, validator: Callable, errors: Optional[List[str]] = []) -> None:
         self.prepare_validation_test(file_name, validator)
-        self.assertRaises(GedcomValidationException, validator, self.repo)
+        results: Optional[List[str]] = validator(self.repo)
+        if errors:
+            self.assertEqual(errors, results)
+        else:
+            self.assertTrue(results and len(validator(self.repo)) > 0)

@@ -1,8 +1,8 @@
-from typing import List, Dict, Iterator, Callable
+from typing import Callable, Optional, List, Dict, Iterator
 from .tags import *
 from .file import GedcomLine, prompt_input_file, get_lines_from_path
 
-
+Validator = Callable[['GedcomRepository'], Optional[List[str]]]
 class GedcomRepository:
     ''' A Repository for GEDCOM file data '''
     __slots__ = 'lines', '_notes', '_header', '_trailer', '_individual_dict', '_family_dict', '_individual_keys', '_family_keys',
@@ -102,13 +102,17 @@ class GedcomRepository:
             print(
                 f'<-- {l.level}|{l.tag}|{l.status}|{" ".join(l.arguments)}')
 
-    def validate(self, validator: Callable[['GedcomRepository'], bool]) -> 'GedcomRepository':
+    def validate(self, validator: Validator) -> 'GedcomRepository':
         ''' run validator on GEDCOM data '''
         try:
-            result: bool = validator(self)
+            errors: List[str] = validator(self)
         except Exception as e:
-            # catch and print validation error
+            # catch and print validator internal erros
             print(e)
+        else:
+            # print each error
+            for error in errors:
+                print(error)
 
         # return self for piping
         return self
