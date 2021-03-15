@@ -113,7 +113,6 @@ class GedcomRepository:
         # return self for piping
         return self
 
-
     def showcase(self, display: Callable[['GedcomRepository'], None]) -> 'GedcomRepository':
         ''' display specified GEDCOM data '''
         try:
@@ -125,6 +124,15 @@ class GedcomRepository:
         # return self for piping
         return self
 
+
+def read_repository_file(path: str) -> GedcomRepository:
+    ''' creat GEDCOM repository from input file '''
+
+    line_generator: Iterator[GedcomLine] = get_lines_from_path(path)
+    lines: List[GedcomLine] = list(line_generator)
+    return GedcomRepository(lines)
+
+
 def prompt_repository_file(
     prompt_message: str = 'Enter GEDCOM file (i.g. "test.ged" or "./test.ged"): ',
     default_file_path: str = 'test.ged'
@@ -132,6 +140,4 @@ def prompt_repository_file(
     ''' prompt for input file to creat GEDCOM repository '''
 
     path: str = prompt_input_file(prompt_message, default_file_path)
-    line_generator: Iterator[GedcomLine] = get_lines_from_path(path)
-    lines: List[GedcomLine] = list(line_generator)
-    return GedcomRepository(lines)
+    return read_repository_file(path)
