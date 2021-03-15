@@ -1,10 +1,9 @@
 from typing import List, Tuple
 from collections import defaultdict
 from gedcom import GedcomRepository
-from gedcom.exceptions import GedcomValidationException
 
 
-def correct_gender_roles(repo: GedcomRepository) -> bool:
+def correct_gender_roles(repo: GedcomRepository) -> List[str]:
   ''' US21: correct gender for family roles '''
   invalid_family_roles: List[Tuple[str]] = []
 
@@ -14,25 +13,21 @@ def correct_gender_roles(repo: GedcomRepository) -> bool:
 
     # check husband is male
     if husband_id and not repo.individual[husband_id].is_male:
-      invalid_family_roles.append((family.id, husband_id))
+      invalid_family_roles.append((family.id, husband_id, 'Husband'))
 
     # check wife is female
     if wife_id and not repo.individual[wife_id].is_female:
-      invalid_family_roles.append((family.id, wife_id))
+      invalid_family_roles.append((family.id, wife_id, 'Wife'))
 
-  if invalid_family_roles:
-    # raise error if any
-    message: str = "Invalid gender roles (Family -> Individual):"
-    for family_id, individual_id in invalid_family_roles:
-      message += f'\n{family_id} -> {individual_id}'
-
-    raise GedcomValidationException(message)
-
-  return True
+  return [
+      f'ERROR US21: Family({family_id}) has incorrect gender for {role}({individual_id})'
+      for family_id, individual_id, role
+      in invalid_family_roles
+  ]
 
 
-def unique_family_spouses(repo: GedcomRepository) -> bool:
-  ''' US21: Unique families by spouse '''
+def unique_family_spouses(repo: GedcomRepository) -> List[str]:
+  ''' US24: Unique families by spouse '''
   families_by_spouse_combo: Dict[Tuple[str], List[str]] = defaultdict(list)
 
   for family in repo.families:
@@ -41,7 +36,7 @@ def unique_family_spouses(repo: GedcomRepository) -> bool:
     marriage_date: Date = family.marriage
 
     husband_name: str = repo.individual[husband_id].name
-    wife_name: str = repo.individual[husband_id].name
+    wife_name: str = repo.individual[wife_id].name
     marriage_str: str = f'{marriage_date}'
 
     # unique by spouse names and marriage date
@@ -49,15 +44,8 @@ def unique_family_spouses(repo: GedcomRepository) -> bool:
 
     families_by_spouse_combo[key].append(family.id)
 
-  duplicate_spouse_info: str = ''
-  for combo, family_id_list in families_by_spouse_combo.items():
-    # find husband name-wife name-marriage combo with multiple families
-    if len(family_id_list) > 1:
-      duplicate_spouse_info += f'\n{combo}: {family_id_list}'
-
-  if duplicate_spouse_info:
-    # raise if there are duplicates
-    raise GedcomValidationException(
-        f'Some family spouses are not unique:{duplicate_spouse_info}')
-
-  return True
+  return [
+      f'ANOMALY US24: Families({", ".join(family_id_list)}) are not unique by spouse names and marriage date: {"|".join(combo)}'
+      for combo, family_id_list in families_by_spouse_combo.items()
+      if len(family_id_list) > 1
+  ]
