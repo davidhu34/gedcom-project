@@ -1,8 +1,9 @@
 
-from typing import Any, List
+from typing import Any, List, Optional
 from datetime import date as Date
 from prettytable import PrettyTable
 from gedcom import GedcomRepository, prompt_repository_file
+from gedcom.tags import GedcomIndividual
 
 NA: str = 'NA'
 
@@ -16,15 +17,16 @@ def optional_string_display(data: Any) -> str:
     return f'{data}'
 
 
-def id_list_display(id_list: List[str]) -> str:
-    ''' get ID list display '''
-    if not id_list:
+def individuals_display(individuals: Optional[List[GedcomIndividual]]) -> str:
+    ''' get individual list display '''
+    if not individuals:
         # return NA if list is empty or invalid
         return NA
 
     # ID's are in quotes
     # join by comma
-    content: str = ", ".join([f"'{id}'" for id in id_list])
+    content: str = ", ".join(
+        [f"'{individual.id}'" for individual in individuals])
     # wrapped by brackets
     return f'{{{content}}}'
 
@@ -50,13 +52,12 @@ def print_gedcom_info(repository: GedcomRepository) -> None:
         death_date: Date = individual.death
         alive: bool = not death_date
 
-        is_male: bool = individual.sex == 'Y'
-        spouse_of_families: List[str] = [repository.family[family_id]
-                                         for family_id in individual.spouse_of_list]
-        spouses: List[str] = [
-            family.wife if is_male else family.husband for family in spouse_of_families]
-        children: List[str] = [
-            child for family in spouse_of_families for child in family.children]
+        is_male: bool = individual.sex == 'M'
+
+        spouses: List[GedcomIndividual] = [
+            family.wife if is_male else family.husband for family in individual.spouse_of_list]
+        children: List[GedcomIndividual] = [
+            child for family in individual.spouse_of_list for child in family.children]
 
         individual_table.add_row([
             individual.id,
@@ -66,8 +67,8 @@ def print_gedcom_info(repository: GedcomRepository) -> None:
             f'{individual.age}',
             alive,
             optional_string_display(death_date),
-            id_list_display(children),
-            id_list_display(spouses),
+            individuals_display(children),
+            individuals_display(spouses),
         ])
 
     print('Individuals')
@@ -87,22 +88,18 @@ def print_gedcom_info(repository: GedcomRepository) -> None:
 
     for family in repository.families:
 
-        husband_id: str = family.husband
-        husband_name: str = repository.individual[husband_id].name
-        wife_id: str = family.wife
-        wife_name: str = repository.individual[wife_id].name
-
-        children
+        husband: GedcomIndividual = family.husband
+        wife: GedcomIndividual = family.wife
 
         family_table.add_row([
             family.id,
             f'{family.marriage}',
             optional_string_display(family.divorce),
-            husband_id,
-            husband_name,
-            wife_id,
-            wife_name,
-            id_list_display(family.children),
+            husband.id,
+            husband.name,
+            wife.id,
+            wife.name,
+            individuals_display(family.children),
         ])
 
     print('Families')
