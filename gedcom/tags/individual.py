@@ -101,9 +101,19 @@ class GedcomIndividual(GedcomSubjectData):
         return self._name.name
 
     @property
+    def name_line_no(self) -> Optional[int]:
+        ''' get individual name line number '''
+        return self._name.line_no
+
+    @property
     def sex(self) -> Optional[str]:
         ''' get individual sex '''
         return self._sex.sex
+
+    @property
+    def sex_line_no(self) -> Optional[int]:
+        ''' get individual sex line number '''
+        return self._sex.line_no
 
     @property
     def is_male(self) -> Optional[str]:
@@ -121,9 +131,19 @@ class GedcomIndividual(GedcomSubjectData):
         return self._birth.date if self._birth else None
 
     @property
+    def birth_line_no(self) -> Optional[int]:
+        ''' get individual birth line number '''
+        return self._birth.line_no
+
+    @property
     def death(self) -> Optional[Date]:
         ''' get individual death date object '''
         return self._death.date if self._death else None
+
+    @property
+    def death_line_no(self) -> Optional[int]:
+        ''' get individual death line number '''
+        return self._death.line_no
 
     def age_at(self, date: Date = Date.today()) -> int:
         ''' get individual age at input date '''
@@ -150,14 +170,29 @@ class GedcomIndividual(GedcomSubjectData):
         return [self._get_member_of_id(spouse_of) for spouse_of in self._spouse_of_list]
 
     @property
+    def spouse_of_line_no_list(self) -> List[str]:
+        ''' get list of line numbers which this individual is a spouse '''
+        return [spouse_of.line_of for spouse_of in self._spouse_of_list]
+
+    @property
     def child_of_list(self) -> List[str]:
         ''' get list of family_id which this individual is a child '''
         return [self._get_member_of_id(child_of) for child_of in self._child_of_list]
 
     @property
+    def child_of_line_no_list(self) -> List[str]:
+        ''' get list of line numbers which this individual is a spouse '''
+        return [spouse_of.line_of for spouse_of in self._spouse_of_list]
+
+    @property
     def member_of_list(self) -> List[str]:
         ''' get list of family_id which this individual is a member '''
         return [member_of.family_id for member_of in self._child_of_list + self._spouse_of_list]
+
+    @property
+    def member_of_line_no_list(self) -> List[str]:
+        ''' get list of line numbers which this individual is a member '''
+        return [member_of.line_of for member_of in self._child_of_list + self._spouse_of_list]
 
     def set_default_values(self) -> None:
         self._name = None

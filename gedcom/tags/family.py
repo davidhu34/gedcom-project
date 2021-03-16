@@ -72,9 +72,19 @@ class GedcomFamily(GedcomSubjectData):
         return self._get_member_id(self._husband)
 
     @property
+    def husband_line_no(self) -> Optional[str]:
+        ''' get husband line number '''
+        return self._husband.line_no
+
+    @property
     def wife(self) -> Optional[str]:
         ''' get husband individual_id '''
         return self._get_member_id(self._wife)
+
+    @property
+    def wife_line_no(self) -> Optional[str]:
+        ''' get wife line number '''
+        return self._wife.line_no
 
     @property
     def children(self) -> List[str]:
@@ -82,14 +92,29 @@ class GedcomFamily(GedcomSubjectData):
         return [self._get_member_id(child) for child in self._children]
 
     @property
+    def children_line_no_list(self) -> List[str]:
+        ''' get list of children line numbers '''
+        return [child.line_no for child in self._children]
+
+    @property
     def marriage(self) -> Optional[Date]:
         ''' get Date object of marriage '''
         return self._marriage.date if self._marriage else None
 
     @property
+    def marriage_line_no(self) -> Optional[str]:
+        ''' get marriage line number '''
+        return self._marriage.line_no
+
+    @property
     def divorce(self) -> Optional[Date]:
         ''' get Date object of divorce '''
         return self._divorce.date if self._divorce else None
+
+    @property
+    def divorce_line_no(self) -> Optional[str]:
+        ''' get divorce line number '''
+        return self._divorce.line_no
 
     def set_default_values(self) -> None:
         self._husband = None

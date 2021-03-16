@@ -4,9 +4,9 @@ from .exceptions import GedcomLineParsingException, GedcomFileNotFound
 
 class GedcomLine:
     ''' parsed GEDCOM file line '''
-    __slots__ = 'data', 'level', 'tag', 'arguments', 'validated'
+    __slots__ = 'line_no', 'data', 'level', 'tag', 'arguments', 'validated'
 
-    def __init__(self, line: str) -> None:
+    def __init__(self, line: str, line_no: int) -> None:
         try:
             level, *tokens = line.split()
             self.level: int = int(level)
@@ -15,7 +15,8 @@ class GedcomLine:
             indi_or_fam: bool = level == '0' and tokens[-1] in ('INDI', 'FAM')
             tag, *arguments = [tokens[1], tokens[0]] if indi_or_fam else tokens
 
-            self.data = line
+            self.line_no: int = line_no
+            self.data: str = line
             self.tag: str = tag
             self.arguments: List[str] = arguments
             self.validated: bool = False
@@ -41,11 +42,12 @@ def get_lines_from_file(file: IO) -> Iterator[GedcomLine]:
     ''' a generator yielding lines from file object '''
     with file:
         # loop through file line sequence
+        line_no: int = 0
         for raw_line in file:
             # remove trailing new line
             line: str = raw_line.rstrip('\n')
-            # if line ends with a slash
-            yield GedcomLine(line)
+            line_no += 1
+            yield GedcomLine(line, line_no)
 
 
 def get_lines_from_path(path: str) -> Iterator[GedcomLine]:

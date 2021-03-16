@@ -38,6 +38,10 @@ class GedcomData(metaclass=ABCMeta):
         return self.lines[0]
 
     @property
+    def line_no(self) -> int:
+        return self.line.line_no
+
+    @property
     def validated(self) -> bool:
         return self.line.validated
 
