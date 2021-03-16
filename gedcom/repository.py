@@ -60,14 +60,14 @@ class GedcomRepository:
 
                 try:
                     if tag == 'INDI':
-                        individual = GedcomIndividual(data_lines)
+                        individual = GedcomIndividual(data_lines, self)
                         self._individual_dict[individual.id] = individual
 
                     if tag == 'FAM':
-                        family = GedcomFamily(data_lines)
+                        family = GedcomFamily(data_lines, self)
                         self._family_dict[family.id] = family
 
-                except:
+                except Exception as e:
                     # skip invalid subject(INDI/FaM)
                     # along with following lines without a valid subject
                     pass
@@ -75,15 +75,15 @@ class GedcomRepository:
             else:
                 try:
                     if tag == 'NOTE':
-                        _notes.append(GedcomNote(data_lines))
+                        self._notes.append(GedcomNote(data_lines, self))
 
                     elif tag == 'HEAD':
-                        _header = GedcomHeader(data_lines)
+                        self._header = GedcomHeader(data_lines, self)
 
                     elif tag == 'TRLR':
-                        _trailer = GedcomTrailer(data_lines)
+                        self._trailer = GedcomTrailer(data_lines, self)
 
-                except:
+                except Exception as e:
                     # skip invalid top level tags
                     pass
 

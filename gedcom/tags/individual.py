@@ -165,34 +165,49 @@ class GedcomIndividual(GedcomSubjectData):
         return member_of.family_id if member_of else None
 
     @property
-    def spouse_of_list(self) -> List[str]:
+    def spouse_of_id_list(self) -> List[str]:
         ''' get list of family_id which this individual is a spouse '''
-        return [self._get_member_of_id(spouse_of) for spouse_of in self._spouse_of_list]
+        return [self._get_member_of_id(_spouse_of) for _spouse_of in self._spouse_of_list]
+
+    @property
+    def spouse_of_list(self) -> List[str]:
+        ''' get list of families which this individual is a spouse '''
+        return [self._repo.family[spouse_of_id] for spouse_of_id in self.spouse_of_id_list]
 
     @property
     def spouse_of_line_no_list(self) -> List[str]:
         ''' get list of line numbers which this individual is a spouse '''
-        return [spouse_of.line_of for spouse_of in self._spouse_of_list]
+        return [_spouse_of.line_no for _spouse_of in self._spouse_of_list]
+
+    @property
+    def child_of_id_list(self) -> List[str]:
+        ''' get list of family_id which this individual is a child '''
+        return [self._get_member_of_id(_child_of) for _child_of in self._child_of_list]
 
     @property
     def child_of_list(self) -> List[str]:
-        ''' get list of family_id which this individual is a child '''
-        return [self._get_member_of_id(child_of) for child_of in self._child_of_list]
+        ''' get list of families which this individual is a child '''
+        return [self._repo.family[child_of_id] for child_of_id in self.child_of_id_list]
 
     @property
     def child_of_line_no_list(self) -> List[str]:
         ''' get list of line numbers which this individual is a spouse '''
-        return [spouse_of.line_of for spouse_of in self._spouse_of_list]
+        return [_spouse_of.line_no for _spouse_of in self._spouse_of_list]
+
+    @property
+    def member_of_id_list(self) -> List[str]:
+        ''' get list of family_id which this individual is a member '''
+        return [_member_of.family_id for _member_of in self._child_of_list + self._spouse_of_list]
 
     @property
     def member_of_list(self) -> List[str]:
-        ''' get list of family_id which this individual is a member '''
-        return [member_of.family_id for member_of in self._child_of_list + self._spouse_of_list]
+        ''' get list of families which this individual is a member '''
+        return [self._repo.family[member_of_id] for member_of_id in self.member_of_id_list]
 
     @property
     def member_of_line_no_list(self) -> List[str]:
         ''' get list of line numbers which this individual is a member '''
-        return [member_of.line_of for member_of in self._child_of_list + self._spouse_of_list]
+        return [_member_of.line_no for _member_of in self._child_of_list + self._spouse_of_list]
 
     def set_default_values(self) -> None:
         self._name = None
@@ -204,7 +219,7 @@ class GedcomIndividual(GedcomSubjectData):
 
     def is_member_of(self, family_id: str) -> bool:
         ''' check if individual is a member of family'''
-        return (family_id in self.member_of_list)
+        return (family_id in self.member_of_id_list)
 
     def parse_info_line(self, index: int) -> bool:
         info_line: GedcomLine = self.lines[index]
@@ -221,28 +236,28 @@ class GedcomIndividual(GedcomSubjectData):
                 if self.has_info(self._birth):
                     raise GedcomInvalidData('Duplicate individual birth date')
 
-                self._birth = GedcomIndividualBirth(data_lines)
+                self._birth = GedcomIndividualBirth(data_lines, self._repo)
 
             elif tag == 'DEAT':
                 if self.has_info(self._death):
                     raise GedcomInvalidData('Duplicate individual death date')
 
-                self._death = GedcomIndividualDeath(data_lines)
+                self._death = GedcomIndividualDeath(data_lines, self._repo)
 
         elif tag == 'NAME':
             if self.has_info(self._name):
                 raise GedcomInvalidData('Duplicate individual name')
 
-            self._name = GedcomIndividualName(data_lines)
+            self._name = GedcomIndividualName(data_lines, self._repo)
 
         elif tag == 'SEX':
             if self.has_info(self._sex):
                 raise GedcomInvalidData('Duplicate individual sex')
 
-            self._sex = GedcomIndividualSex(data_lines)
+            self._sex = GedcomIndividualSex(data_lines, self._repo)
 
         elif tag == 'FAMC':
-            child_of = GedcomIndividualChildOf(data_lines)
+            child_of = GedcomIndividualChildOf(data_lines, self._repo)
 
             if self.is_member_of(child_of.family_id):
                 child_of.validated = False
@@ -252,7 +267,7 @@ class GedcomIndividual(GedcomSubjectData):
             self._child_of_list.append(child_of)
 
         elif tag == 'FAMS':
-            spouse_of = GedcomIndividualSpouseOf(data_lines)
+            spouse_of = GedcomIndividualSpouseOf(data_lines, self._repo)
 
             if self.is_member_of(spouse_of.family_id):
                 spouse_of.validated = False

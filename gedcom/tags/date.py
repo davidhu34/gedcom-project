@@ -69,7 +69,7 @@ class GedcomDateEvent(GedcomTagOnlyData):
             raise GedcomInvalidData('event no argumets allowed')
 
         date_line: GedcomLine = self.lines[1]
-        date: GedcomDate = GedcomDate([date_line])
+        date: GedcomDate = GedcomDate([date_line], self._repo)
 
         self._date = date if date.validated else None
         return bool(self._date)
