@@ -19,11 +19,13 @@ def correct_gender_roles(repo: GedcomRepository) -> List[str]:
     if wife_id and not repo.individual[wife_id].is_female:
       invalid_family_roles.append((family.id, wife_id, 'Wife'))
 
-  return [
-      f'ERROR US21: Family({family_id}) has incorrect gender for {role}({individual_id})'
-      for family_id, individual_id, role
-      in invalid_family_roles
-  ]
+  errors: List[str] = []
+  for family_id, individual_id, role in invalid_family_roles:
+    invalid_sex_line_no: int = repo.individual[individual_id].sex_line_no
+    errors.append(
+        f'ERROR US21 at line {invalid_sex_line_no}: Family({family_id}) has incorrect gender for {role}({individual_id})')
+
+  return errors
 
 
 def unique_family_spouses(repo: GedcomRepository) -> List[str]:
@@ -44,8 +46,14 @@ def unique_family_spouses(repo: GedcomRepository) -> List[str]:
 
     families_by_spouse_combo[key].append(family.id)
 
-  return [
-      f'ANOMALY US24: Families({", ".join(family_id_list)}) are not unique by spouse names and marriage date: {"|".join(combo)}'
-      for combo, family_id_list in families_by_spouse_combo.items()
-      if len(family_id_list) > 1
-  ]
+  errors: List[str] = []
+  for combo, family_id_list in families_by_spouse_combo.items():
+    if len(family_id_list) > 1:
+      family_line_info: List[str] = [
+          f'{family_id} at line {repo.family[family_id].line_no}'
+          for family_id in family_id_list
+      ]
+      errors.append(
+          f'ANOMALY US24: Families({", ".join(family_line_info)}) are not unique by spouse names and marriage date: {"|".join(combo)}')
+
+  return errors

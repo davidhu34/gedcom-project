@@ -61,7 +61,7 @@
 0 NOTE end of individual Zeke Yaeger
 0 I07 INDI
 1 NAME Grandpa /Yaeger/
-1 SEX M
+1 SEX F
 1 DEAT
 1 BIRT
 2 DATE 4 APR 0785
@@ -102,6 +102,11 @@
 1 WIFE I04
 1 CHIL I03
 0 NOTE end of family Marley Yaeger 1st gen
+0 F04 FAM
+1 MARR
+2 DATE 5 MAY 0805
+1 WIFE I08
+1 HUSB I07
 0 FAM F77
 0 WWW abcde
 0 TRLR

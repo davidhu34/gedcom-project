@@ -7,6 +7,7 @@ if __name__ == "__main__":
     repo: GedcomRepository = prompt_repository_file()
 
     repo \
+        .showcase(print_gedcom_info) \
         .validate(correct_gender_roles) \
-        .validate(unique_family_spouses) \
-        .showcase(print_gedcom_info)
+        .validate(unique_family_spouses)
+        
