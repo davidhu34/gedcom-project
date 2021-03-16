@@ -67,9 +67,14 @@ class GedcomFamily(GedcomSubjectData):
         return member.individual_id if member else None
 
     @property
-    def husband(self) -> Optional[str]:
+    def husband_id(self) -> Optional[str]:
         ''' get husband individual_id '''
         return self._get_member_id(self._husband)
+
+    @property
+    def husband(self) -> Optional[str]:
+        ''' get husband '''
+        return self._repo.individual[self.husband_id]
 
     @property
     def husband_line_no(self) -> Optional[str]:
@@ -77,9 +82,14 @@ class GedcomFamily(GedcomSubjectData):
         return self._husband.line_no
 
     @property
-    def wife(self) -> Optional[str]:
+    def wife_id(self) -> Optional[str]:
         ''' get husband individual_id '''
         return self._get_member_id(self._wife)
+
+    @property
+    def wife(self) -> Optional[str]:
+        ''' get wife '''
+        return self._repo.individual[self.wife_id]
 
     @property
     def wife_line_no(self) -> Optional[str]:
@@ -87,14 +97,19 @@ class GedcomFamily(GedcomSubjectData):
         return self._wife.line_no
 
     @property
-    def children(self) -> List[str]:
+    def children_id_list(self) -> List[str]:
         ''' get list of children individual_id '''
-        return [self._get_member_id(child) for child in self._children]
+        return [self._get_member_id(_child) for _child in self._children]
+
+    @property
+    def children(self) -> List[str]:
+        ''' get list of children '''
+        return [self._repo.individual[child_id] for child_id in self.children_id_list]
 
     @property
     def children_line_no_list(self) -> List[str]:
         ''' get list of children line numbers '''
-        return [child.line_no for child in self._children]
+        return [_child.line_no for _child in self._children]
 
     @property
     def marriage(self) -> Optional[Date]:
@@ -143,19 +158,19 @@ class GedcomFamily(GedcomSubjectData):
                 if self.has_info(self._marriage):
                     raise GedcomInvalidData('Duplicate family marriage date')
 
-                self._marriage = GedcomFamilyMarriage(data_lines)
+                self._marriage = GedcomFamilyMarriage(data_lines, self._repo)
 
             elif tag == 'DIV':
                 if self.has_info(self._divorce):
                     raise GedcomInvalidData('Duplicate family divorce date')
 
-                self._divorce = GedcomFamilyDivorce(data_lines)
+                self._divorce = GedcomFamilyDivorce(data_lines, self._repo)
 
         elif tag == 'HUSB':
             if self.has_info(self._husband):
                 raise GedcomInvalidData('Duplicate family husband')
 
-            husband = GedcomFamilyHusband(data_lines)
+            husband = GedcomFamilyHusband(data_lines, self._repo)
 
             if self.has_member(husband.individual_id):
                 child.validated = False
@@ -167,7 +182,7 @@ class GedcomFamily(GedcomSubjectData):
             if self.has_info(self._wife):
                 raise GedcomInvalidData('Duplicate family wife')
 
-            wife = GedcomFamilyWife(data_lines)
+            wife = GedcomFamilyWife(data_lines, self._repo)
 
             if self.has_member(wife.individual_id):
                 wife.validated = False
@@ -176,7 +191,7 @@ class GedcomFamily(GedcomSubjectData):
             self._wife = wife
 
         elif tag == 'CHIL':
-            child = GedcomFamilyChild(data_lines)
+            child = GedcomFamilyChild(data_lines, self._repo)
 
             if self.has_member(child.individual_id):
                 child.validated = False

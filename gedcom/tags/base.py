@@ -6,17 +6,9 @@ from ..exceptions import GedcomDataParsingException, GedcomInvalidData
 
 class GedcomData(metaclass=ABCMeta):
     ''' GEDCOM data base object '''
-    # __slots__ = 'lines', '_level', 'parents', 'children'
+    # __slots__ = 'lines', '_repo', '_level', 'parents', 'children'
 
     belongs_to: Optional[str] = None
-
-    # @property
-    # def level(self) -> int:
-    #     return self._level;
-
-    # @level.setter
-    # def level(self, l: int) -> None:
-    #     self._level = l
 
     @property
     @abstractmethod
@@ -58,13 +50,9 @@ class GedcomData(metaclass=ABCMeta):
         ''' override to provide default values in __init__ '''
         pass
 
-    # def __init__(self, lines: List[GedcomLine], level: Optional[int] = None) -> None:
-    def __init__(self, lines: List[GedcomLine]) -> None:
+    def __init__(self, lines: List[GedcomLine], repo: 'GedcomRepository') -> None:
+        self._repo: 'GedcomRepository' = repo
         self.lines: List[GedcomLine] = lines
-        # self.parents: List[GedcomData] = []
-        # self.childern: List[GedcomData] = []
-        # if level != None:
-        #     self.level = level
 
         self.set_default_values()
 
@@ -83,7 +71,6 @@ class GedcomData(metaclass=ABCMeta):
                 raise GedcomDataParsingException('data parsing failed')
 
         except Exception as e:
-            # print('parse_line error', e, self.line.data)
             pass
 
         else:
@@ -155,7 +142,6 @@ class GedcomSubjectData(GedcomData):
                 self.parse_info_line(index)
 
             except Exception as e:
-                # print('parse info line', e, self.line.data)
                 pass
 
         return True
