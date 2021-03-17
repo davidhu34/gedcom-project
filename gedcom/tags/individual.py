@@ -1,5 +1,6 @@
-from typing import Optional, List
+from typing import Optional, List, Tuple
 from datetime import date as Date
+import re
 from .base import GedcomData, GedcomSubjectData
 from .date import GedcomDateEvent
 from ..exceptions import GedcomInvalidData
@@ -99,6 +100,30 @@ class GedcomIndividual(GedcomSubjectData):
     def name(self) -> Optional[str]:
         ''' get individual name '''
         return self._name.name
+
+    def _get_name_parts(self) -> Tuple[str]:
+        ''' returns individual (first_name, last_name)'''
+        name: str = self.name
+        slash_indices: List[int] = [
+            i for i, c in enumerate(self.name) if c == '/']
+
+        if len(slash_indices) != 2:
+            return (name)
+
+        first_name: str = name[0: slash_indices[0]].strip()
+        last_name: str = name[slash_indices[0] + 1: slash_indices[1]].strip()
+        return (first_name, last_name)
+
+    @property
+    def first_name(self) -> Optional[str]:
+        ''' get individual first name '''
+        return self._get_name_parts()[0]
+
+    @property
+    def last_name(self) -> Optional[str]:
+        ''' get individual last name '''
+        name_parts: Tuple[str] = self._get_name_parts()
+        return name_parts[1] if len(name_parts) == 2 else None
 
     @property
     def name_line_no(self) -> Optional[int]:
