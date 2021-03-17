@@ -2,7 +2,6 @@
 0 NOTE ssw555tm032021Spring
 0 I01 INDI
 1 NAME Eren /Yaeger/
-2 SEX M
 1 SEX M
 1 BIRT
 2 DATE 30 MAR 0835
@@ -10,7 +9,6 @@
 0 NOTE end of individual Eren Yaeger
 0 I02 INDI
 1 NAME Carla /Yaeger/
-1 SEX X
 1 SEX F
 1 BIRT
 2 DATE 29 JAN 0810
@@ -19,7 +17,6 @@
 1 FAMS F01
 0 NOTE end of individual Carla Yaeger
 0 I03 INDI
-1 NAME
 1 NAME Grisha /Yaeger/
 1 SEX M
 1 BIRT
@@ -31,7 +28,6 @@
 1 FAMC F03
 0 NOTE end of individual Grisha Yaeger
 0 I04 INDI
-2 NAME Mikasa /Ackerman/
 1 NAME Mikasa /Ackerman/
 1 SEX F
 1 BIRT
@@ -42,8 +38,6 @@
 0 I05 INDI
 1 NAME Dina /Fritz/
 1 SEX F
-1 MARR
-2 DATE 26 JUL 1000
 1 BIRT
 2 DATE 26 JUL 0806
 1 DEAT
@@ -55,30 +49,24 @@
 1 SEX M
 1 BIRT
 2 DATE 1 AUG 0825
-1 DATE 1 AUG 0825
 1 FAMS F02
 1 FAMC F02
 0 NOTE end of individual Zeke Yaeger
 0 I07 INDI
 1 NAME Grandpa /Yaeger/
 1 SEX M
-1 DEAT
 1 BIRT
 2 DATE 4 APR 0785
 1 FAMS F03
 0 NOTE end of individual Grandpa Yaeger
 0 I08 INDI
 1 NAME Grandma /Yaeger/
-1 SEX M
-1 BIRT
-2 DATE 3 X 0785
+1 SEX F
 1 BIRT
 2 DATE 3 MAR 0785
 0 NOTE end of individual Grandma Yaeger
 1 FAMS F03
 0 F01 FAM
-1 MARR
-2 DATE 7 JUL 0834
 1 MARR
 2 DATE 7 JUL 0834
 1 HUSB I03
@@ -99,9 +87,11 @@
 2 DATE 5 MAY 0805
 1 WIFE I08
 1 HUSB I07
-1 WIFE I04
 1 CHIL I03
 0 NOTE end of family Marley Yaeger 1st gen
-0 FAM F77
-0 WWW abcde
+0 F04 FAM
+1 MARR
+2 DATE 5 MAY 0806
+1 HUSB I08
+1 WIFE I07
 0 TRLR
