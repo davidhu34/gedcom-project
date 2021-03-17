@@ -11,7 +11,7 @@ class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
             'incorrect_unique_name_and_birth', unique_name_and_birth)
 
         self.assert_file_validation_passes(
-            'unique_name_and_birth', unique_name_and_birth)
+            'correct_unique_name_and_birth', unique_name_and_birth)
 
     def test_unique_names_in_families(self) -> None:
         """ test unique_first_names_in_families """
@@ -20,4 +20,4 @@ class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
             'incorrect_unique_names_in_families', unique_names_in_families)
 
         self.assert_file_validation_passes(
-            'unique_names_in_families', unique_names_in_families)
+            'correct_unique_names_in_families', unique_names_in_families)
