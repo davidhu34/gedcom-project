@@ -2,6 +2,7 @@ from typing import List, Tuple
 from collections import defaultdict
 from gedcom import GedcomRepository
 
+
 def unique_name_and_birth(repo):
   ''' US23 '''
   errors = []
@@ -27,7 +28,7 @@ def unique_name_and_birth(repo):
   return errors
 
 
-def unique_names_in_families(repo):
+def unique_first_names_in_families(repo):
   ''' US25 '''
   errors = []
 
@@ -36,11 +37,12 @@ def unique_names_in_families(repo):
     husband = family.husband  # an indi
     children = family.children  # list of indis
 
-    individuals_by_name: Dict[str, List[GedcomIndividual]] = defaultdict(list)
+    individuals_by_first_name: Dict[str,
+                                    List[GedcomIndividual]] = defaultdict(list)
     for individual in children + [wife] + [husband]:
-      individuals_by_name[individual.name].append(individual)
+      individuals_by_first_name[individual.first_name].append(individual)
 
-    for name, individuals in individuals_by_name.items():
+    for first_name, individuals in individuals_by_first_name.items():
       if len(individuals) > 1:
         name_line_info: List[str] = [
             f'{individual.id} at line {individual.name_line_no}'
