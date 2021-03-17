@@ -1,7 +1,6 @@
 from datetime import date as Date
 from gedcom import GedcomRepository
 
-
 def divorce_before_death(repo: GedcomRepository) -> bool:
     """ US06: Divorce date occurs before death date"""
     errors = []

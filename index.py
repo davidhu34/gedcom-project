@@ -3,6 +3,7 @@ from features.project3 import print_gedcom_info
 from features.family_role_validation import correct_gender_roles, unique_family_spouses
 from features.Unique_name_first_names_and_birthdate_validations import unique_name_and_birth, unique_first_names_in_families
 from features.birth_before import birth_before_death,birth_before_marriage
+from features.valid_dates import divorce_before_death, dates_before_current_date
 
 
 if __name__ == "__main__":
@@ -15,5 +16,7 @@ if __name__ == "__main__":
         .validate(unique_name_and_birth) \
         .validate(unique_first_names_in_families)\
         .validate(birth_before_death)\
-        .validate(birth_before_marriage)
+        .validate(birth_before_marriage)\
+        .validate(divorce_before_death)\
+        .validate(dates_before_current_date)
 
