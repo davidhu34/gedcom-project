@@ -11,7 +11,10 @@ def birth_before_marriage(repo: GedcomRepository) -> List[str]:
   
   for family in repo.families:
     marriage_date: Date = family.marriage
-    
+  
+    if not marriage_date:
+      continue
+
     if family.husband and marriage_date<family.husband.birth:
       errors.append(
           f'ERROR US02 at line {family.husband.sex_line_no}: Husband ({family.husband.id}) in family({family.id}) married before being born')
