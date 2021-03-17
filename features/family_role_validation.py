@@ -14,12 +14,12 @@ def correct_gender_roles(repo: GedcomRepository) -> List[str]:
     # check husband is male
     if family.husband and not family.husband.is_male:
       errors.append(
-          f'ERROR US21 at line {family.husband.sex_line_no}: Family({family.id}) has incorrect gender for Husband({family.husband.id})')
+          f'ERROR US21: Family({family.id}) has incorrect gender (at line {family.husband.sex_line_no}) for Husband({family.husband.id}) at line {family.husband_line_no}')
 
     # check wife is female
     if family.wife and not family.wife.is_female:
       errors.append(
-          f'ERROR US21 at line {family.wife.sex_line_no}: Family({family.id}) has incorrect gender for Wife({family.wife.id})')
+          f'ERROR US21: Family({family.id}) has incorrect gender (at line {family.wife.sex_line_no}) for Wife({family.wife.id}) at line {family.wife_line_no}')
 
   return errors
 
