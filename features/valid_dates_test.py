@@ -6,8 +6,8 @@ class ValidDatesTest(GedcomTestCase):
     def test_divorce_before_death(self) -> None:
         """ test divorce_before_death """
 
-        self.assert_file_validation_fails('invalid_dates', divorce_before_death, 
-        ['ERROR US06: Divorce date (at line 100) for Family(F4) occurs after Husband(@I7@) death date (at line 47).'])
+        self.assert_file_validation_fails('invalid_divorce_dates', divorce_before_death, 
+        ['ERROR US06: Divorce date (at line 100) for Family(@F4@) occurs after Husband(@I7@) death date (at line 47).'])
 
         self.assert_file_validation_passes('valid_divorce_dates', divorce_before_death)
     
