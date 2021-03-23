@@ -1,8 +1,15 @@
 from typing import Callable, Optional, List, Dict, Iterator, Tuple, Any, DefaultDict
+from collections import defaultdict
 from .tags import *
 from .file import GedcomLine, prompt_input_file, get_lines_from_path
+from .pretty_table import pretty_print_individuals, pretty_print_families
+
 
 Validator = Callable[['GedcomRepository'], Optional[List[str]]]
+
+Printer = Callable[['GedcomRepository'], Tuple[Any]]
+
+
 class GedcomRepository:
     ''' A Repository for GEDCOM file data '''
     __slots__ = 'lines', '_notes', '_header', '_trailer', '_individuals', '_families', '_individual_dict', '_family_dict', '_individual_keys', '_family_keys', 'individual_duplicates',  'family_duplicates'
@@ -137,6 +144,26 @@ class GedcomRepository:
 
         # return self for piping
         return self
+
+    def print_individuals(self, individual_printer: Printer) -> None:
+        ''' print specified individual data with PrettyTable '''
+        # get table content from printer
+        title, individual_id_list = individual_printer(self)
+        # print with PrettyTable
+        pretty_print_individuals(
+            title, [self.individual[id] for id in individual_id_list])
+        # return self for piping
+        return self;
+
+    def print_families(self, family_printer: Printer) -> None:
+        ''' print specified family data with PrettyTable '''
+        # get table content from printer
+        title, family_id_list = family_printer(self)
+        # print with PrettyTable
+        pretty_print_families(title, [self.family[id]
+                                      for id in family_id_list])
+        # return self for piping
+        return self;
 
     def showcase(self, display: Callable[['GedcomRepository'], None]) -> 'GedcomRepository':
         ''' display specified GEDCOM data '''
