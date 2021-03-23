@@ -16,20 +16,25 @@ def optional_string_display(data: Any) -> str:
     return f'{data}'
 
 
-def individuals_display(individuals: Optional[List[GedcomIndividual]] = []) -> str:
-    ''' get individual list display '''
-    # filter out non-existant individuals
-    # ID's are in quotes
-    id_list: List[str] = [f"'{individual.id}'" for individual in individuals if individual]
-
+def id_list_display(id_list: Optional[List[str]] = []) -> str:
+    ''' get ID list display '''
     if not id_list:
         # return NA if list is empty or invalid
         return NA
 
     # join by comma
-    content: str = ", ".join(id_list)
+    # ID's are in quotes
+    content: str = ", ".join([f"'{id}'" for id in id_list])
     # wrapped by brackets
     return f'{{{content}}}'
+
+
+def individuals_display(individuals: Optional[List[GedcomIndividual]] = []) -> str:
+    ''' get individual list display '''
+    # filter out non-existant individuals
+    id_list: List[str] = [f"'{individual.id}'" for individual in individuals if individual]
+
+    return id_list_display(id_list)
 
 
 def pretty_print_individuals(title: str, individuals: List[GedcomIndividual]) -> None:
@@ -55,11 +60,11 @@ def pretty_print_individuals(title: str, individuals: List[GedcomIndividual]) ->
         alive: bool = not death_date
         is_male: bool = individual.sex == 'M'
 
-        spouses: List[GedcomIndividual] = [
-            family.wife if is_male else family.husband for family in individual.spouse_of_list if family]
+        spouse_id_list: List[str] = [
+            family.wife_id if is_male else family.husband_id for family in individual.spouse_of_list if family]
 
-        children: List[GedcomIndividual] = [
-            child for family in individual.spouse_of_list if family for child in family.children]
+        children_id_list: List[str] = [
+            child_id for family in individual.spouse_of_list if family for child_id in family.children_id_list]
 
         individual_table.add_row([
             individual.id,
@@ -69,8 +74,8 @@ def pretty_print_individuals(title: str, individuals: List[GedcomIndividual]) ->
             f'{individual.age}',
             alive,
             optional_string_display(death_date),
-            individuals_display(children),
-            individuals_display(spouses),
+            id_list_display(children_id_list),
+            id_list_display(spouse_id_list),
         ])
 
     print(title)
@@ -104,7 +109,7 @@ def pretty_print_families(title: str, families: List[GedcomFamily]) -> None:
             husband.name if husband else NA,
             family.wife_id,
             wife.name if wife else NA,
-            individuals_display(family.children),
+            id_list_display(family.children_id_list),
         ])
 
     print(title)
