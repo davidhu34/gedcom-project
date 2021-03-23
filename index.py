@@ -5,6 +5,7 @@ from features.Unique_name_first_names_and_birthdate_validations import unique_na
 from features.birth_before import birth_before_death,birth_before_marriage
 from features.valid_dates import divorce_before_death, dates_before_current_date
 from features.birth_before_parents_marriage_and_death import birth_before_parents_marriage, birth_before_parents_death
+from features.age_and_age_at_death_less_than_150_years_old import age_and_age_at_death
 
 
 if __name__ == "__main__":
@@ -21,5 +22,6 @@ if __name__ == "__main__":
         .validate(divorce_before_death)\
         .validate(dates_before_current_date)\
         .validate(birth_before_parents_marriage)\
-        .validate(birth_before_parents_death)
+        .validate(birth_before_parents_death) \
+        .validate(age_and_age_at_death)
 
