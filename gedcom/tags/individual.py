@@ -171,13 +171,15 @@ class GedcomIndividual(GedcomSubjectData):
         return self._death.line_no
 
     def age_at(self, date: Date = Date.today()) -> int:
-        ''' get individual age at input date '''
+        ''' get individual age at death, or else age at input date '''
+
+        end_date: Date = self.death if self.death and self.death < date else date
         birth_date: Date = self.birth
         this_birth_date: Date = Date(
-            date.year, birth_date.month, birth_date.day)
+            end_date.year, birth_date.month, birth_date.day)
 
-        return date.year - birth_date.year - \
-            (1 if date < this_birth_date else 0)
+        return end_date.year - birth_date.year - \
+            (1 if end_date < this_birth_date else 0)
 
     @property
     def age(self) -> int:
