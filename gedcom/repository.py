@@ -1,11 +1,11 @@
-from typing import Callable, Optional, List, Dict, Iterator
+from typing import Callable, Optional, List, Dict, Iterator, Tuple, Any, DefaultDict
 from .tags import *
 from .file import GedcomLine, prompt_input_file, get_lines_from_path
 
 Validator = Callable[['GedcomRepository'], Optional[List[str]]]
 class GedcomRepository:
     ''' A Repository for GEDCOM file data '''
-    __slots__ = 'lines', '_notes', '_header', '_trailer', '_individual_dict', '_family_dict', '_individual_keys', '_family_keys',
+    __slots__ = 'lines', '_notes', '_header', '_trailer', '_individuals', '_families', '_individual_dict', '_family_dict', '_individual_keys', '_family_keys', 'individual_duplicates',  'family_duplicates'
 
     def __init__(self, lines: List[GedcomLine]) -> None:
         ''' construct GedcomRepository '''
@@ -24,19 +24,25 @@ class GedcomRepository:
     @property
     def individuals(self) -> List[GedcomIndividual]:
         ''' get list of individuals ordered by id '''
-        return [self.individual[id] for id in self._individual_keys]
+        # return [self.individual[id] for id in self._individual_keys]
+        return self._individuals
 
     @property
     def families(self) -> List[GedcomFamily]:
         ''' get list of families ordered by id '''
-        return [self.family[id] for id in self._family_keys]
+        # return [self.family[id] for id in self._family_keys]
+        return self._families
 
     def reset_containers(self) -> None:
         self._notes: List[GedcomNotes] = []
-        self._individual_keys: List[GedcomIndividual] = []
-        self._family_keys: List[GedcomFamily] = []
-        self._individual_dict: Dict[str, GedcomIndividual] = {}
-        self._family_dict: Dict[str, GedcomFamily] = {}
+        self._individuals: List[GedcomIndividual] = []
+        self._families: List[GedcomFamily] = []
+        self._individual_keys: List[str] = []
+        self._family_keys: List[str] = []
+        self._individual_dict: Dict[str, GedcomIndividual] = defaultdict(lambda: None)
+        self._family_dict: Dict[str, GedcomFamily] = defaultdict(lambda: None)
+        self.individual_duplicates: DefaultDict[str, List[GedcomIndividual]] = defaultdict(list)
+        self.family_duplicates: DefaultDict[str, List[GedcomFamily]] = defaultdict(list)
 
     def parse_and_validate_lines(self, lines: List[GedcomLine]) -> None:
         ''' get data from lines and validate '''
@@ -44,6 +50,9 @@ class GedcomRepository:
         # cleanse data
         self.lines: List[GedcomLine] = lines
         self.reset_containers()
+
+        _individuals: List[GedcomIndividual] = []
+        _families: List[GedcomFamily] = []
 
         i: int = 0
         while i < len(lines):
@@ -61,11 +70,21 @@ class GedcomRepository:
                 try:
                     if tag == 'INDI':
                         individual = GedcomIndividual(data_lines, self)
-                        self._individual_dict[individual.id] = individual
+                        _individuals.append(individual)
+                        # maintain occurrences
+                        self.individual_duplicates[individual.id].append(individual)
+                        # save the first occurrence to dictionary
+                        if individual.id not in self._individual_dict:
+                            self._individual_dict[individual.id] = individual
 
                     if tag == 'FAM':
                         family = GedcomFamily(data_lines, self)
-                        self._family_dict[family.id] = family
+                        _families.append(family)
+                        # maintain occurrences
+                        self.family_duplicates[family.id].append(family)
+                        # save the first occurrence to dictionary
+                        if family.id not in self._family_dict:
+                            self._family_dict[family.id] = family
 
                 except Exception as e:
                     # skip invalid subject(INDI/FaM)
@@ -92,6 +111,8 @@ class GedcomRepository:
         # sort individuals and family by key
         self._individual_keys = sorted(self._individual_dict.keys())
         self._family_keys = sorted(self._family_dict.keys())
+        self._individuals = sorted(_individuals, key=lambda individual: individual.id)
+        self._families = sorted(_families, key=lambda family: family.id)
         # end of parse_and_validate_lines
 
     def print_parse_report(self) -> None:

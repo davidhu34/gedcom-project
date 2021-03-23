@@ -217,7 +217,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def child_of_line_no_list(self) -> List[str]:
         ''' get list of line numbers which this individual is a spouse '''
-        return [_spouse_of.line_no for _spouse_of in self._spouse_of_list]
+        return [_child_of.line_no for _child_of in self._child_of_list]
 
     @property
     def member_of_id_list(self) -> List[str]:
