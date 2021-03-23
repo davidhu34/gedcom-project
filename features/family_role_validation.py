@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Tuple, DefaultDict
 from collections import defaultdict
 from gedcom import GedcomRepository
 
@@ -26,14 +26,16 @@ def correct_gender_roles(repo: GedcomRepository) -> List[str]:
 
 def unique_family_spouses(repo: GedcomRepository) -> List[str]:
   ''' US24: Unique families by spouse '''
-  families_by_spouse_combo: Dict[Tuple[str], List[str]] = defaultdict(list)
+  families_by_spouse_combo: DefaultDict[Tuple[str], List[str]] = defaultdict(list)
 
   for family in repo.families:
-    marriage_date: Date = family.marriage
+    # ignore families with incomplete info
+    if not family.husband or not family.wife or not family.marriage:
+      continue
 
     husband_name: str = family.husband.name
     wife_name: str = family.wife.name
-    marriage_str: str = f'{marriage_date}'
+    marriage_str: str = f'{family.marriage}'
 
     # unique by spouse names and marriage date
     key: Tuple[str] = (husband_name, wife_name, marriage_str)
