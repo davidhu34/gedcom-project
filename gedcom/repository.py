@@ -162,7 +162,7 @@ class GedcomRepository:
         # get table content from printer
         print_info = family_printer(self)
         if print_info:
-            title, family_id_list = (self)
+            title, family_id_list = print_info
             # print with PrettyTable
             pretty_print_families(title, [self.family[id]
                                         for id in family_id_list])
