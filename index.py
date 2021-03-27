@@ -26,7 +26,7 @@ if __name__ == "__main__":
         .validate(birth_before_parents_marriage) \
         .validate(birth_before_parents_death) \
         .validate(unique_ids) \
-        .validate(corresponding_entries)\
-        .validate(marriage_before_death)\
-        .validate(marriage_before_divorce)
+        .validate(corresponding_entries) \
+        .validate(marriage_before_death) \
+        .validate(marriage_before_divorce) \
         .validate(age_and_age_at_death)
