@@ -104,7 +104,7 @@ class GedcomFamily(GedcomSubjectData):
     @property
     def children(self) -> List[str]:
         ''' get list of children '''
-        return [self._repo.individual[child_id] for child_id in self.children_id_list]
+        return [child for child in [self._repo.individual[child_id] for child_id in self.children_id_list] if child]
 
     @property
     def children_line_no_list(self) -> List[str]:

@@ -13,7 +13,7 @@ def age_and_age_at_death(repo):
     
         if  individual_age >= 150 :
             errors.append(
-                f'ERROR US07: Individuals({individual.id}) have incorrect age (at line {individual.age_line_no})')
+                f'ERROR US07: Individuals({individual.id}) have incorrect age ({individual.age}) (at line {individual.birth_line_no})')
 
 
 

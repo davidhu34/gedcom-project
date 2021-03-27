@@ -199,7 +199,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def spouse_of_list(self) -> List[str]:
         ''' get list of families which this individual is a spouse '''
-        return [self._repo.family[spouse_of_id] for spouse_of_id in self.spouse_of_id_list]
+        return [spouse_of for spouse_of in [self._repo.family[spouse_of_id] for spouse_of_id in self.spouse_of_id_list] if spouse_of]
 
     @property
     def spouse_of_line_no_list(self) -> List[str]:
@@ -214,7 +214,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def child_of_list(self) -> List[str]:
         ''' get list of families which this individual is a child '''
-        return [self._repo.family[child_of_id] for child_of_id in self.child_of_id_list]
+        return [child_of for child_of in [self._repo.family[child_of_id] for child_of_id in self.child_of_id_list] if child_of]
 
     @property
     def child_of_line_no_list(self) -> List[str]:
@@ -229,7 +229,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def member_of_list(self) -> List[str]:
         ''' get list of families which this individual is a member '''
-        return [self._repo.family[member_of_id] for member_of_id in self.member_of_id_list]
+        return [member_of for member_of in [self._repo.family[member_of_id] for member_of_id in self.member_of_id_list] if member_of]
 
     @property
     def member_of_line_no_list(self) -> List[str]:
