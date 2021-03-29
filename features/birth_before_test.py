@@ -2,7 +2,7 @@ from gedcom.testing import GedcomTestCase
 from features.birth_before import birth_before_death, birth_before_marriage
 
 
-class correctdeathandmarriagetest(GedcomTestCase):
+class BirthBeforeTest(GedcomTestCase):
 
     def test_birth_before_marriage(self) -> None:
         """ test birth before marriage """
