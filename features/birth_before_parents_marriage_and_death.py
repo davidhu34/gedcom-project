@@ -9,9 +9,12 @@ def birth_before_parents_marriage(repo: GedcomRepository):
 
         if len(family.children) == 0:
             continue
-        
+
+        if not marriage_date:
+            continue
+
         for child in family.children:
-            if not marriage_date or child.birth < marriage_date:
+            if child.birth < marriage_date:
                 errors.append(
                     f"ANOMALY US08: Birth date (at line {child.birth_line_no}) for Individual({child.id}) in Family({family.id}) occurs before parent's marriage date (at line {family.marriage_line_no}).")
     
