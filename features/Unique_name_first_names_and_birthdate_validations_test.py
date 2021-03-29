@@ -9,7 +9,7 @@ class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
 
         self.assert_file_validation_fails(
             'incorrect_unique_name_and_birth', unique_name_and_birth,
-            ['ANOMALY US23: Individuals(@P1@ at line 3, @P2@ at line 9) are not unique by names and birth date: Fatima /Porgho/|1972-02-07'])
+            ['ANOMALY US23: Individuals(I01 at line 3, I02 at line 10) are not unique by names and birth date: Fatima /Porgho/|1972-02-07'])
 
         self.assert_file_validation_passes(
             'correct_unique_name_and_birth', unique_name_and_birth)
@@ -19,7 +19,7 @@ class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
 
         self.assert_file_validation_fails(
             'incorrect_unique_first_names_in_families', unique_first_names_in_families,
-            ['ANOMALY US25: Family(@F1@ at line21) does not have unique first names (@P2@ at line 13, @P3@ at line 19)'])
+            ['ANOMALY US25: Family(F01 at line24) does not have unique first names (I02 at line 11, I03 at line 18)'])
 
         self.assert_file_validation_passes(
             'correct_unique_first_names_in_families', unique_first_names_in_families)
