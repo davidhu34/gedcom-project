@@ -150,10 +150,9 @@ class GedcomRepository:
         # get table content from printer
         print_info = individual_printer(self)
         if print_info:
-            title, individual_id_list = print_info
+            title, individual_list = print_info
             # print with PrettyTable
-            pretty_print_individuals(
-                title, [self.individual[id] for id in individual_id_list])
+            pretty_print_individuals(title, individual_list)
         # return self for piping
         return self;
 
@@ -162,10 +161,9 @@ class GedcomRepository:
         # get table content from printer
         print_info = family_printer(self)
         if print_info:
-            title, family_id_list = print_info
+            title, family_list = print_info
             # print with PrettyTable
-            pretty_print_families(title, [self.family[id]
-                                        for id in family_id_list])
+            pretty_print_families(title, family_list)
         # return self for piping
         return self;
 
