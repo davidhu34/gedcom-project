@@ -8,6 +8,7 @@ from features.birth_before_parents_marriage_and_death import birth_before_parent
 from features.mariage_before import marriage_before_death,marriage_before_divorce
 from features.id_validations import unique_ids, corresponding_entries
 from features.age_less_than_150_years_old_and_siblings_order import age_and_age_at_death, order_siblings_by_age
+from features.marriage_after_14_and_male_last_names import marriage_after_14
 
 if __name__ == "__main__":
     repo: GedcomRepository = prompt_repository_file()
@@ -30,4 +31,5 @@ if __name__ == "__main__":
         .validate(marriage_before_death) \
         .validate(marriage_before_divorce) \
         .validate(age_and_age_at_death) \
-        .print_individuals(order_siblings_by_age)
+        .print_individuals(order_siblings_by_age) \
+        .validate(marriage_after_14)
