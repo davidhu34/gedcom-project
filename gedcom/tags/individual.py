@@ -199,10 +199,17 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def spouse_of_list(self) -> List[str]:
         ''' get list of families which this individual is a spouse '''
-        return [spouse_of for spouse_of in [self._repo.family[spouse_of_id] for spouse_of_id in self.spouse_of_id_list] if spouse_of]
+        # return [spouse_of for spouse_of in [self._repo.family[spouse_of_id] for spouse_of_id in self.spouse_of_id_list] if spouse_of]
+        result: List[GedcomFamily] = []
+        for family_id in list(set(self.spouse_of_id_list)):
+            if family_id:
+                result.extend(self._repo.family_duplicates[family_id])
+        
+        return result
+            
 
     @property
-    def spouse_of_line_no_list(self) -> List[str]:
+    def spouse_of_line_no_list(self) -> List[int]:
         ''' get list of line numbers which this individual is a spouse '''
         return [_spouse_of.line_no for _spouse_of in self._spouse_of_list]
 
@@ -214,10 +221,16 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def child_of_list(self) -> List[str]:
         ''' get list of families which this individual is a child '''
-        return [child_of for child_of in [self._repo.family[child_of_id] for child_of_id in self.child_of_id_list] if child_of]
+        # return [child_of for child_of in [self._repo.family[child_of_id] for child_of_id in self.child_of_id_list] if child_of]
+        result: List[GedcomFamily] = []
+        for family_id in list(set(self.child_of_id_list)):
+            if family_id:
+                result.extend(self._repo.family_duplicates[family_id])
+        
+        return result
 
     @property
-    def child_of_line_no_list(self) -> List[str]:
+    def child_of_line_no_list(self) -> List[int]:
         ''' get list of line numbers which this individual is a spouse '''
         return [_child_of.line_no for _child_of in self._child_of_list]
 
@@ -232,7 +245,7 @@ class GedcomIndividual(GedcomSubjectData):
         return [member_of for member_of in [self._repo.family[member_of_id] for member_of_id in self.member_of_id_list] if member_of]
 
     @property
-    def member_of_line_no_list(self) -> List[str]:
+    def member_of_line_no_list(self) -> List[int]:
         ''' get list of line numbers which this individual is a member '''
         return [_member_of.line_no for _member_of in self._child_of_list + self._spouse_of_list]
 

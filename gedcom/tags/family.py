@@ -2,6 +2,7 @@ from typing import Optional, List
 from datetime import date as Date
 from .base import GedcomData, GedcomSubjectData
 from .date import GedcomDateEvent
+from .individual import GedcomIndividual
 from ..exceptions import GedcomInvalidData
 
 
@@ -72,12 +73,17 @@ class GedcomFamily(GedcomSubjectData):
         return self._get_member_id(self._husband)
 
     @property
-    def husband(self) -> Optional[str]:
+    def husband(self) -> Optional[GedcomIndividual]:
         ''' get husband '''
         return self._repo.individual[self.husband_id]
 
     @property
-    def husband_line_no(self) -> Optional[str]:
+    def husbands(self) -> List[GedcomIndividual]:
+        ''' get husband '''
+        return self._repo.individual_duplicates[self.husband_id]
+
+    @property
+    def husband_line_no(self) -> Optional[int]:
         ''' get husband line number '''
         return self._husband.line_no
 
@@ -87,12 +93,17 @@ class GedcomFamily(GedcomSubjectData):
         return self._get_member_id(self._wife)
 
     @property
-    def wife(self) -> Optional[str]:
+    def wife(self) -> Optional[GedcomIndividual]:
         ''' get wife '''
         return self._repo.individual[self.wife_id]
 
     @property
-    def wife_line_no(self) -> Optional[str]:
+    def wifes(self) -> List[GedcomIndividual]:
+        ''' get wife '''
+        return self._repo.individual_duplicates[self.wife_id]
+
+    @property
+    def wife_line_no(self) -> Optional[int]:
         ''' get wife line number '''
         return self._wife.line_no
 
@@ -104,10 +115,16 @@ class GedcomFamily(GedcomSubjectData):
     @property
     def children(self) -> List[str]:
         ''' get list of children '''
-        return [child for child in [self._repo.individual[child_id] for child_id in self.children_id_list] if child]
+        # return [child for child in [self._repo.individual[child_id] for child_id in self.children_id_list] if child]
+        result: List[GedcomIndividual] = []
+        for child_id in list(set(self.children_id_list)):
+            if child_id:
+                result.extend(self._repo.individual_duplicates[child_id])
+
+        return result;
 
     @property
-    def children_line_no_list(self) -> List[str]:
+    def children_line_no_list(self) -> List[int]:
         ''' get list of children line numbers '''
         return [_child.line_no for _child in self._children]
 
@@ -117,7 +134,7 @@ class GedcomFamily(GedcomSubjectData):
         return self._marriage.date if self._marriage else None
 
     @property
-    def marriage_line_no(self) -> Optional[str]:
+    def marriage_line_no(self) -> Optional[int]:
         ''' get marriage line number '''
         return self._marriage.line_no
 
@@ -127,7 +144,7 @@ class GedcomFamily(GedcomSubjectData):
         return self._divorce.date if self._divorce else None
 
     @property
-    def divorce_line_no(self) -> Optional[str]:
+    def divorce_line_no(self) -> Optional[int]:
         ''' get divorce line number '''
         return self._divorce.line_no
 
