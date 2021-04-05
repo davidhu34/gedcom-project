@@ -31,9 +31,11 @@ class GedcomTestCase(TestCase):
         else:
             self.assertTrue(results and len(validator(self.repo)) > 0)
 
-    def assert_printer_result(self, file_name: str, printer: Callable, results: List[str]) -> None:
+    def assert_printer_result(self, file_name: str, printer: Callable, result_ids: List[str]) -> None:
         self.parse_test_file(file_name)
         if not printer:
             raise 'No printer provided for test case'
-        self.assertEqual(results, printer(self.repo))
+        
+        title, results = printer(self.repo)
+        self.assertEqual(result_ids, [subject.id for subject in results])
         
