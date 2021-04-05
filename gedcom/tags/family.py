@@ -1,8 +1,7 @@
-from typing import Optional, List
+from typing import Optional, List, Set
 from datetime import date as Date
 from .base import GedcomData, GedcomSubjectData
 from .date import GedcomDateEvent
-from .individual import GedcomIndividual
 from ..exceptions import GedcomInvalidData
 
 
@@ -73,12 +72,12 @@ class GedcomFamily(GedcomSubjectData):
         return self._get_member_id(self._husband)
 
     @property
-    def husband(self) -> Optional[GedcomIndividual]:
+    def husband(self) -> Optional['GedcomIndividual']:
         ''' get husband '''
         return self._repo.individual[self.husband_id]
 
     @property
-    def husbands(self) -> List[GedcomIndividual]:
+    def husbands(self) -> List['GedcomIndividual']:
         ''' get husband '''
         return self._repo.individual_duplicates[self.husband_id]
 
@@ -93,12 +92,12 @@ class GedcomFamily(GedcomSubjectData):
         return self._get_member_id(self._wife)
 
     @property
-    def wife(self) -> Optional[GedcomIndividual]:
+    def wife(self) -> Optional['GedcomIndividual']:
         ''' get wife '''
         return self._repo.individual[self.wife_id]
 
     @property
-    def wifes(self) -> List[GedcomIndividual]:
+    def wifes(self) -> List['GedcomIndividual']:
         ''' get wife '''
         return self._repo.individual_duplicates[self.wife_id]
 
@@ -116,9 +115,11 @@ class GedcomFamily(GedcomSubjectData):
     def children(self) -> List[str]:
         ''' get list of children '''
         # return [child for child in [self._repo.individual[child_id] for child_id in self.children_id_list] if child]
-        result: List[GedcomIndividual] = []
-        for child_id in list(set(self.children_id_list)):
-            if child_id:
+        result: List['GedcomIndividual'] = []
+        visited: Set[str] = set()
+        for child_id in self.children_id_list:
+            if not child_id in visited:
+                visited.add(child_id)
                 result.extend(self._repo.individual_duplicates[child_id])
 
         return result;

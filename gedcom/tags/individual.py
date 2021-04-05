@@ -114,6 +114,17 @@ class GedcomIndividual(GedcomSubjectData):
         last_name: str = name[slash_indices[0] + 1: slash_indices[1]].strip()
         return (first_name, last_name)
 
+    def get_families_by_id_list(self, id_list: List[str]) -> List['GedcomFamily']:
+        ''' get all individual including duplicates by ID list '''
+        result: List['GedcomFamily'] = []
+        visited: Set[str] = set()
+        for family_id in id_list:
+            if not family_id in visited:
+                visited.add(family_id)
+                result.extend(self._repo.family_duplicates[family_id])
+
+        return result
+
     @property
     def first_name(self) -> Optional[str]:
         ''' get individual first name '''
@@ -197,16 +208,10 @@ class GedcomIndividual(GedcomSubjectData):
         return [self._get_member_of_id(_spouse_of) for _spouse_of in self._spouse_of_list]
 
     @property
-    def spouse_of_list(self) -> List[str]:
+    def spouse_of_list(self) -> List['GedcomFamily']:
         ''' get list of families which this individual is a spouse '''
         # return [spouse_of for spouse_of in [self._repo.family[spouse_of_id] for spouse_of_id in self.spouse_of_id_list] if spouse_of]
-        result: List[GedcomFamily] = []
-        for family_id in list(set(self.spouse_of_id_list)):
-            if family_id:
-                result.extend(self._repo.family_duplicates[family_id])
-        
-        return result
-            
+        return self.get_families_by_id_list(self.spouse_of_id_list)
 
     @property
     def spouse_of_line_no_list(self) -> List[int]:
@@ -219,15 +224,10 @@ class GedcomIndividual(GedcomSubjectData):
         return [self._get_member_of_id(_child_of) for _child_of in self._child_of_list]
 
     @property
-    def child_of_list(self) -> List[str]:
+    def child_of_list(self) -> List['GedcomFamily']:
         ''' get list of families which this individual is a child '''
         # return [child_of for child_of in [self._repo.family[child_of_id] for child_of_id in self.child_of_id_list] if child_of]
-        result: List[GedcomFamily] = []
-        for family_id in list(set(self.child_of_id_list)):
-            if family_id:
-                result.extend(self._repo.family_duplicates[family_id])
-        
-        return result
+        return self.get_families_by_id_list(self.child_of_id_list)
 
     @property
     def child_of_line_no_list(self) -> List[int]:
@@ -240,9 +240,10 @@ class GedcomIndividual(GedcomSubjectData):
         return [_member_of.family_id for _member_of in self._child_of_list + self._spouse_of_list]
 
     @property
-    def member_of_list(self) -> List[str]:
+    def member_of_list(self) -> List['GedcomFamily']:
         ''' get list of families which this individual is a member '''
-        return [member_of for member_of in [self._repo.family[member_of_id] for member_of_id in self.member_of_id_list] if member_of]
+        # return [member_of for member_of in [self._repo.family[member_of_id] for member_of_id in self.member_of_id_list] if member_of]
+        return self.get_families_by_id_list(self.member_of_id_list)
 
     @property
     def member_of_line_no_list(self) -> List[int]:
