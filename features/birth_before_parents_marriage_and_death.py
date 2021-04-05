@@ -14,7 +14,7 @@ def birth_before_parents_marriage(repo: GedcomRepository):
             continue
 
         for child in family.children:
-            if child.birth < marriage_date:
+            if child.birth and child.birth < marriage_date:
                 errors.append(
                     f"ANOMALY US08: Birth date (at line {child.birth_line_no}) for Individual({child.id}) in Family({family.id}) occurs before parent's marriage date (at line {family.marriage_line_no}).")
     
@@ -31,13 +31,18 @@ def birth_before_parents_death(repo: GedcomRepository):
             continue
 
         for child in family.children:
-            if father and father.death and father.death < child.birth:
-                errors.append(
-                    f"ERROR US09: Birth date (at line {child.birth_line_no}) for Individual({child.id}) in Family({family.id}) occurs after Father's({father.id}) death date (at line {father.death_line_no}).")
+            if not child.birth:
+                continue
+
+            for father in family.husbands:
+                if father.death and father.death < child.birth:
+                    errors.append(
+                        f"ERROR US09: Birth date (at line {child.birth_line_no}) for Individual({child.id}) in Family({family.id}) occurs after Father's({father.id}) death date (at line {father.death_line_no}).")
             
-            if mother and mother.death and mother.death < child.birth:
-                errors.append(
-                    f"ERROR US09: Birth date (at line {child.birth_line_no}) for Individual({child.id}) in Family({family.id}) occurs after Mother's({mother.id}) death date (at line {mother.death_line_no}).")
+            for mother in family.wifes:
+                if mother.death and mother.death < child.birth:
+                    errors.append(
+                        f"ERROR US09: Birth date (at line {child.birth_line_no}) for Individual({child.id}) in Family({family.id}) occurs after Mother's({mother.id}) death date (at line {mother.death_line_no}).")
     
     return errors
             

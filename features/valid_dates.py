@@ -1,29 +1,30 @@
 from datetime import date as Date
 from gedcom import GedcomRepository
 
+
 def divorce_before_death(repo: GedcomRepository) -> bool:
     """ US06: Divorce date occurs before death date"""
     errors = []
 
     for family in repo.families:
         divorce_date = family.divorce
-        husband = family.husband
-        wife = family.wife
 
         if not divorce_date:
             continue
 
-        if husband.death and husband.death < divorce_date:
-            divorce_line_no = family.divorce_line_no
-            death_line_no = husband.death_line_no
-            errors.append(
-                f'ERROR US06: Divorce date (at line {divorce_line_no}) for Family({family.id}) occurs after Husband({husband.id}) death date (at line {death_line_no}).')
+        for husband in family.husbands:
+            if husband.death and husband.death < divorce_date:
+                divorce_line_no = family.divorce_line_no
+                death_line_no = husband.death_line_no
+                errors.append(
+                    f'ERROR US06: Divorce date (at line {divorce_line_no}) for Family({family.id}) occurs after Husband({husband.id}) death date (at line {death_line_no}).')
 
-        if wife.death and wife.death < divorce_date:
-            divorce_line_no = family.divorce_line_no
-            death_line_no = wife.death_line_no
-            errors.append(
-                f'ERROR US06: Divorce date (at line {divorce_line_no}) for Family({family.id}) occurs after Wife({wife.id}) death date (at line {death_line_no}).')
+        for wife in family.wifes:
+            if wife.death and wife.death < divorce_date:
+                divorce_line_no = family.divorce_line_no
+                death_line_no = wife.death_line_no
+                errors.append(
+                    f'ERROR US06: Divorce date (at line {divorce_line_no}) for Family({family.id}) occurs after Wife({wife.id}) death date (at line {death_line_no}).')
 
     return errors
 
