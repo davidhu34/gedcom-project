@@ -9,7 +9,7 @@ class MarriageAgeAndMaleLastNamesTest(GedcomTestCase):
         self.assert_file_validation_fails('incorrect_marriage_after_14', marriage_after_14, 
         [
             'ERROR US10: Individual(I02) in Family(F01) married (at line 53) when under age 14.', 
-            'ERROR US10: Individual(I02) in Family(F01) married (at line 53) when under age 14.'
+            'ERROR US10: Individual(I03) in Family(F01) married (at line 53) when under age 14.'
         ])
 
         self.assert_file_validation_passes('correct_marriage_after_14', marriage_after_14)
