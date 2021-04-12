@@ -1,4 +1,3 @@
-from features.marriage_after_14_and_male_last_names import marriage_after_14
 from gedcom import GedcomRepository, prompt_repository_file
 from features.project3 import all_gedcom_individuals, all_gedcom_families
 from features.family_role_validation import correct_gender_roles, unique_family_spouses
@@ -10,6 +9,8 @@ from features.mariage_before import marriage_before_death, marriage_before_divor
 from features.id_validations import unique_ids, corresponding_entries
 from features.age_less_than_150_years_old_and_siblings_order import age_and_age_at_death, order_siblings_by_age
 from features.list_of_all_deceased_and_living_married import deceased_individual_list, living_married_list
+from features.marriage_after_14_and_male_last_names import marriage_after_14, male_last_names
+
 
 
 if __name__ == "__main__":
@@ -35,5 +36,6 @@ if __name__ == "__main__":
         .validate(age_and_age_at_death) \
         .print_individuals(order_siblings_by_age) \
         .validate(marriage_after_14) \
+        .print_individuals(male_last_names) \
         .print_individuals(deceased_individual_list) \
         .print_individuals(living_married_list)
