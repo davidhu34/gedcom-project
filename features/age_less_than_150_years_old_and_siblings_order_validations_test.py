@@ -1,7 +1,6 @@
 from gedcom.testing import GedcomTestCase
 from features.age_less_than_150_years_old_and_siblings_order import age_and_age_at_death
 
-
 class agelessthan150yearsoldandsiblingsorderTest(GedcomTestCase):
 
     def test_age_and_age_at_death(self) -> None:
