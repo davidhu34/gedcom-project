@@ -5,7 +5,7 @@ from features.Unique_name_first_names_and_birthdate_validations import unique_na
 class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
 
     def test_unique_name_and_birth(self) -> None:
-        """ test unique_name_and_birth """
+        ''' US23: Test Unique name and birth date '''
 
         self.assert_file_validation_fails(
             'incorrect_unique_name_and_birth', unique_name_and_birth,
@@ -15,7 +15,7 @@ class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
             'correct_unique_name_and_birth', unique_name_and_birth)
 
     def test_unique_first_names_in_families(self) -> None:
-        """ test unique_first_names_in_families """
+        ''' US25: Test Unique first names in families '''
 
         self.assert_file_validation_fails(
             'incorrect_unique_first_names_in_families', unique_first_names_in_families,

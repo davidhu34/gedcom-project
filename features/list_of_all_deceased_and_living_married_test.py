@@ -7,9 +7,9 @@ class PrintTest(GedcomTestCase):
     def test_deceased_individual_list(self) -> None:
         ''' US29: test print all deceased individuals '''
         self.assert_printer_result(
-            'test', deceased_individual_list, ['I02', 'I03', 'I05', 'I08'])
+            'list_of_deceased', deceased_individual_list, ['I03'])
 
     def test_living_married_list(self) -> None:
         ''' US30: test print all living married '''
         self.assert_printer_result(
-            'test', living_married_list, ['I07', 'I07'])
+            'list_of_living_married', living_married_list, ['I04', 'I03', 'I05', 'I02'])

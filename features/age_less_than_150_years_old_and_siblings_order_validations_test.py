@@ -1,10 +1,9 @@
 from gedcom.testing import GedcomTestCase
 from features.age_less_than_150_years_old_and_siblings_order import age_and_age_at_death
-
 class agelessthan150yearsoldandsiblingsorderTest(GedcomTestCase):
 
     def test_age_and_age_at_death(self) -> None:
-        """ test_age_and_age_at_death """
+        ''' US07: Test age Less than 150 years old '''
 
         self.assert_file_validation_fails(
             'age_greater_than_150_years_old', age_and_age_at_death, 
