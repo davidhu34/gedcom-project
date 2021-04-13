@@ -8,8 +8,9 @@ from features.birth_before_parents_marriage_and_death import birth_before_parent
 from features.mariage_before import marriage_before_death, marriage_before_divorce
 from features.id_validations import unique_ids, corresponding_entries
 from features.age_less_than_150_years_old_and_siblings_order import age_and_age_at_death, order_siblings_by_age
-from features.list_of_all_deceased_and_living_married import deceased_individual_list, living_married_list
+from features.List_of_all_deceased_and_living_married import deceased_individual_list, living_married_list
 from features.marriage_after_14_and_male_last_names import marriage_after_14, male_last_names
+from features.parents_too_old import parents_too_old, sibling_spacing
 
 
 
@@ -38,4 +39,6 @@ if __name__ == "__main__":
         .validate(marriage_after_14) \
         .print_individuals(male_last_names) \
         .print_individuals(deceased_individual_list) \
-        .print_individuals(living_married_list)
+        .print_individuals(living_married_list)\
+        .validate(sibling_spacing)\
+        .validate(parents_too_old)

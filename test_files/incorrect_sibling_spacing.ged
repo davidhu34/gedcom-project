@@ -1,0 +1,36 @@
+0 HEAD
+0 NOTE Awatestfile
+0 I01 INDI
+1 NAME Aisha /Savadogo/
+1 SEX F
+1 BIRT 
+2 DATE 29 APR 2003
+1 FAMC F01
+0 NOTE end of individual Aisha Savadogo
+0 I02 INDI
+1 NAME Latifa /Savadogo/
+1 SEX F 
+1 BIRT 
+2 DATE 22 APR 2003
+1 FAMC F01
+0 NOTE end of individual Latifa Savadogo
+0 I03 INDI
+1 NAME Fatima /Porgho/
+1 SEX F
+1 BIRT 
+2 DATE 07 FEB 1972
+1 FAMS F01
+0 NOTE end of individual Fatima /Porgho/
+0 I04 INDI 
+1 NAME Daoud /Savadogo/
+1 SEX M
+1 BIRT 
+2 DATE 31 JAN 1972
+1 FAMS F01
+0 NOTE end of individual Daoud Savadogo
+0 F01 FAM 
+1 HUSB I04
+1 WIFE I03
+1 CHIL I01
+1 CHIL I02
+0 TRLR
