@@ -1,5 +1,5 @@
 from gedcom.testing import GedcomTestCase
-from features.Unique_name_first_names_and_birthdate_validations import unique_name_and_birth, unique_first_names_in_families
+from features.unique_name_first_names_and_birthdate_validations import unique_name_and_birth, unique_first_names_in_families
 
 
 class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
