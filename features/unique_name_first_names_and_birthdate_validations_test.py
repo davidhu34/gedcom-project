@@ -2,7 +2,7 @@ from gedcom.testing import GedcomTestCase
 from features.unique_name_first_names_and_birthdate_validations import unique_name_and_birth, unique_first_names_in_families
 
 
-class UniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
+class uniquenamefirstnamesandbirthdatevalidationsTest(GedcomTestCase):
 
     def test_unique_name_and_birth(self) -> None:
         ''' US23: Test Unique name and birth date '''
