@@ -14,7 +14,12 @@ class MarriageAgeAndMaleLastNamesTest(GedcomTestCase):
 
         self.assert_file_validation_passes('correct_marriage_after_14', marriage_after_14)
     
-    # def test_male_last_names(self) -> None:
-    #     """ test male_last_names """
+    def test_male_last_names(self) -> None:
+        """ test male_last_names """
 
-    #     self.assert_printer_result('male_last_names', male_last_names, )
+        self.assert_file_validation_fails('incorrect_male_last_names', male_last_names, 
+        [
+            'ERROR US16: In Family(F01), Son(I08) last name (at line 50) does not match Father(I02) last name (at line 8).'
+        ])
+
+        self.assert_file_validation_passes('correct_male_last_names', male_last_names)
