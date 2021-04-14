@@ -1,7 +1,4 @@
-from typing import List, Tuple
-from collections import defaultdict
 from gedcom import GedcomRepository
-from gedcom.pretty_table import pretty_print_individuals
 
 
 def deceased_individual_list(repo):
@@ -18,15 +15,18 @@ def deceased_individual_list(repo):
 
 def living_married_list(repo):
     '''US30 : List all living married individuals'''
-    living_married = []  
+    living_married = []
     for family in repo.families:
 
         if family.marriage and not family.divorce:
 
-            if family.husband and not family.husband.death:
-                living_married.append(family.husband)
+            for husband in family.husbands:
 
-            if family.wife and not family.wife.death:
-                living_married.append(family.wife)
+                if not husband.death:
+                    living_married.append(family.husband)
+
+            for wife in family.wifes:
+                if not wife.death:
+                    living_married.append(family.wife)
 
     return 'living married', living_married
