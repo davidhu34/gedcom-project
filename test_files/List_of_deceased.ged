@@ -1,0 +1,32 @@
+0 HEAD
+0 NOTE Awatestfile
+0 I01 INDI
+1 NAME Patty /Poura/
+1 SEX F
+1 BIRT 
+2 DATE 5 JUL 1930
+1 FAMC F01
+0 NOTE end of individual Patty Poura
+0 I02 INDI
+1 NAME Goggle /Aras/
+1 SEX F
+1 BIRT 
+2 DATE 10 MAY 1910
+1 DEAT
+2 DATE 13 SEPT 1960
+1 FAMS F01
+0 NOTE end of individual Goggle Aras
+0 I03 INDI 
+1 NAME Farto /Poura/
+1 SEX M
+1 BIRT 
+2 DATE 17 JAN 1905
+1 DEAT
+2 DATE 20 JUN 1962
+1 FAMS F01
+0 NOTE end of individual Farto Poura
+0 F01 FAM 
+1 HUSB I03
+1 WIFE I02
+1 CHIL I01
+0 TRLR

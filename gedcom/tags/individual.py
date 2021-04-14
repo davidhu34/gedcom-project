@@ -139,7 +139,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def name_line_no(self) -> Optional[int]:
         ''' get individual name line number '''
-        return self._name.line_no
+        return self._get_line_no(self._name)
 
     @property
     def sex(self) -> Optional[str]:
@@ -149,7 +149,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def sex_line_no(self) -> Optional[int]:
         ''' get individual sex line number '''
-        return self._sex.line_no
+        return self._get_line_no(self._sex)
 
     @property
     def is_male(self) -> Optional[str]:
@@ -169,7 +169,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def birth_line_no(self) -> Optional[int]:
         ''' get individual birth line number '''
-        return self._birth.line_no
+        return self._get_line_no(self._birth)
 
     @property
     def death(self) -> Optional[Date]:
@@ -179,7 +179,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def death_line_no(self) -> Optional[int]:
         ''' get individual death line number '''
-        return self._death.line_no
+        return self._get_line_no(self._death)
 
     def age_at(self, date: Date = Date.today()) -> int:
         ''' get individual age at death, or else age at input date '''
@@ -216,7 +216,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def spouse_of_line_no_list(self) -> List[int]:
         ''' get list of line numbers which this individual is a spouse '''
-        return [_spouse_of.line_no for _spouse_of in self._spouse_of_list]
+        return [self._get_line_no(_spouse_of) for _spouse_of in self._spouse_of_list]
 
     @property
     def child_of_id_list(self) -> List[str]:
@@ -232,7 +232,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def child_of_line_no_list(self) -> List[int]:
         ''' get list of line numbers which this individual is a spouse '''
-        return [_child_of.line_no for _child_of in self._child_of_list]
+        return [self._get_line_no(_child_of) for _child_of in self._child_of_list]
 
     @property
     def member_of_id_list(self) -> List[str]:
@@ -248,7 +248,7 @@ class GedcomIndividual(GedcomSubjectData):
     @property
     def member_of_line_no_list(self) -> List[int]:
         ''' get list of line numbers which this individual is a member '''
-        return [_member_of.line_no for _member_of in self._child_of_list + self._spouse_of_list]
+        return [self._get_line_no(_member_of) for _member_of in self._child_of_list + self._spouse_of_list]
 
     def set_default_values(self) -> None:
         self._name = None
