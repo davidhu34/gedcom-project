@@ -8,11 +8,12 @@ class ParentsAgeTest(GedcomTestCase):
         """ test if parents are within 60 and 80 years of child """
 
         self.assert_file_validation_fails(
-            'incorrect_parent_age', parents_too_old,
-            ['ERROR US12 at line 21: Parent in family(F01) is too old'])
+            'incorrect_parents_too_old', parents_too_old,
+            ["ERROR US12: Child(I01) is at least 60 years younger than their mother (at line 6)",
+            "ERROR US12: Child(I04) is at least 60 years younger than their mother (at line 33)"])
 
         self.assert_file_validation_passes(
-            'correct_parent_age', parents_too_old)
+            'correct_parents_too_old', parents_too_old)
 
     def test_sibling_spacing(self) -> None:
         """ test if siblings are too close in age but not twins """

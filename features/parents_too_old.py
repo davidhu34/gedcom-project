@@ -4,22 +4,19 @@ from gedcom import GedcomRepository
 from datetime import datetime, date as Date
 
 
-def year_diff(d1, d2) -> int:
+def year_diff(date1, date2) -> int:
+  d1, d2 =  (date2, date1) if date1 > date2 else (date1, date2)
   ''' d2 should be larger/later than d1 '''
   d2_mark: Date = Date(d2.year, d1.month, d1.day)
 
   return d2.year - d1.year - \
       (1 if d2 < d2_mark else 0)
 
-def month_diff(d1, d2) -> int:
-  return d1.month - d2.month
+def month_diff(date1, date2) -> int:
+  d1, d2 =  (date2, date1) if date1 > date2 else (date1, date2)
   
   years_apart: int = year_diff(d1, d2)
-  if years_apart > 0:
-    return d2.month - d1.month
-
-  else:
-    return years_apart * 12 + d2.month - d1.month
+  return years_apart * 12 + d2.month - d1.month
 
 
 
