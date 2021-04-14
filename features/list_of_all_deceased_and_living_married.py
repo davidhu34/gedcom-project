@@ -13,7 +13,7 @@ def deceased_individual_list(repo):
         if individual.death:
             deceased_individuals.append(individual)
 
-    return 'deceased_individuals', deceased_individuals
+    return 'deceased individuals', deceased_individuals
 
 
 def living_married_list(repo):

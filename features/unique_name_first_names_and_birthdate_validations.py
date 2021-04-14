@@ -4,7 +4,7 @@ from gedcom import GedcomRepository
 
 
 def unique_name_and_birth(repo):
-  ''' US23 '''
+  ''' US23: Unique name and birth date '''
   errors = []
 
   individuals_by_combination: Dict[Tuple[str],
@@ -29,7 +29,7 @@ def unique_name_and_birth(repo):
 
 
 def unique_first_names_in_families(repo):
-  ''' US25 '''
+  ''' US25: Unique first names in families '''
   errors = []
 
   for family in repo.families:
