@@ -37,7 +37,7 @@ if __name__ == "__main__":
         .validate(age_and_age_at_death) \
         .print_individuals(order_siblings_by_age) \
         .validate(marriage_after_14) \
-        .print_individuals(male_last_names) \
+        .validate(male_last_names) \
         .print_individuals(deceased_individual_list) \
         .print_individuals(living_married_list)\
         .validate(sibling_spacing)\
