@@ -77,9 +77,9 @@ class GedcomFamily(GedcomSubjectData):
         return self._repo.individual[self.husband_id]
 
     @property
-    def husband_line_no(self) -> Optional[str]:
+    def husband_line_no(self) -> Optional[int]:
         ''' get husband line number '''
-        return self._husband.line_no
+        return self._get_line_no(self._husband)
 
     @property
     def wife_id(self) -> Optional[str]:
@@ -92,9 +92,9 @@ class GedcomFamily(GedcomSubjectData):
         return self._repo.individual[self.wife_id]
 
     @property
-    def wife_line_no(self) -> Optional[str]:
+    def wife_line_no(self) -> Optional[int]:
         ''' get wife line number '''
-        return self._wife.line_no
+        return self._get_line_no(self._wife)
 
     @property
     def children_id_list(self) -> List[str]:
@@ -107,9 +107,9 @@ class GedcomFamily(GedcomSubjectData):
         return [child for child in [self._repo.individual[child_id] for child_id in self.children_id_list] if child]
 
     @property
-    def children_line_no_list(self) -> List[str]:
+    def children_line_no_list(self) -> List[int]:
         ''' get list of children line numbers '''
-        return [_child.line_no for _child in self._children]
+        return [self._get_line_no(_child) for _child in self._children]
 
     @property
     def marriage(self) -> Optional[Date]:
@@ -117,9 +117,9 @@ class GedcomFamily(GedcomSubjectData):
         return self._marriage.date if self._marriage else None
 
     @property
-    def marriage_line_no(self) -> Optional[str]:
+    def marriage_line_no(self) -> Optional[int]:
         ''' get marriage line number '''
-        return self._marriage.line_no
+        return self._get_line_no(self._marriage)
 
     @property
     def divorce(self) -> Optional[Date]:
@@ -127,9 +127,9 @@ class GedcomFamily(GedcomSubjectData):
         return self._divorce.date if self._divorce else None
 
     @property
-    def divorce_line_no(self) -> Optional[str]:
+    def divorce_line_no(self) -> Optional[int]:
         ''' get divorce line number '''
-        return self._divorce.line_no
+        return self._get_line_no(self._divorce)
 
     def set_default_values(self) -> None:
         self._husband = None

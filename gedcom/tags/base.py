@@ -110,6 +110,10 @@ class GedcomSubjectData(GedcomData):
     def event_tags(self) -> List[str]:
         return []
 
+    def _get_line_no(self, data: GedcomData) -> Optional[int]:
+        ''' get line number of data object, None if no data '''
+        return data.line_no if data else None
+
     def has_info(self, info: GedcomData) -> bool:
         return info and info.validated
 
