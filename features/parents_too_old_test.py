@@ -10,7 +10,7 @@ class ParentsAgeTest(GedcomTestCase):
         self.assert_file_validation_fails(
             'incorrect_parents_too_old', parents_too_old,
             ["ERROR US12: Child(I01) is at least 60 years younger than their mother (at line 6)",
-            "ERROR US12: Child(I04) is at least 60 years younger than their mother (at line 33)"])
+             "ERROR US12: Child(I04) is at least 60 years younger than their mother (at line 33)"])
 
         self.assert_file_validation_passes(
             'correct_parents_too_old', parents_too_old)
@@ -21,7 +21,7 @@ class ParentsAgeTest(GedcomTestCase):
         self.assert_file_validation_fails(
             'incorrect_sibling_spacing', sibling_spacing,
             ['ERROR US13: Child(I01) was born too close in time to another sibling(I02). (at line 6)',
-            "ERROR US13: Child(I02) was born too close in time to another sibling(I01). (at line 13)"])
+             "ERROR US13: Child(I02) was born too close in time to another sibling(I01). (at line 13)"])
 
         self.assert_file_validation_passes(
             'correct_sibling_spacing', sibling_spacing)

@@ -33,13 +33,10 @@ def unique_first_names_in_families(repo):
   errors = []
 
   for family in repo.families:
-    wife = family.wife  # an indi
-    husband = family.husband  # an indi
-    children = family.children  # list of indis
-
     individuals_by_first_name: Dict[str,
                                     List[GedcomIndividual]] = defaultdict(list)
-    for individual in [*children, wife, husband]:
+
+    for individual in [*family.children, *family.wifes, *family.husbands]:
       if not individual:
         continue
       individuals_by_first_name[individual.first_name].append(individual)
