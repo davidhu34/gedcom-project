@@ -21,6 +21,8 @@ def month_diff(d1, d2) -> int:
   else:
     return years_apart * 12 + d2.month - d1.month
 
+
+
 def parents_too_old(repo: GedcomRepository) -> List[str]:
   ''' US12: Mother should be less than 60 years older than her children and father should be less than 80 years older than his children'''
   errors: List[str] = []
@@ -29,7 +31,6 @@ def parents_too_old(repo: GedcomRepository) -> List[str]:
     wife = family.wife  # an indi
     husband = family.husband  # an indi
     children = family.children  # list of indis
-    
     for child in children:
         if (year_diff(wife.birth,child.birth))>60:
             errors.append(
@@ -52,7 +53,7 @@ def sibling_spacing(repo: GedcomRepository) -> List[str]:
               continue
             else:
 
-              if ((month_diff(child,child2)< 8) and (month_diff(child,child2)>1)):
+              if ((month_diff(child.birth,child2.birth)< 8) and (child.birth.day - child2.birth.day)>2):
                 errors.append(f'ERROR US13: Child({child.id}) was born too close in time to another sibling. (at line {child.birth_line_no})')
   return errors
 

@@ -5,7 +5,7 @@ from features.parents_too_old import parents_too_old, sibling_spacing
 class BirthBeforeTest(GedcomTestCase):
 
     def test_parents_too_old(self) -> None:
-        """ test parents too old """
+        """ test if parents are within 60 and 80 years of child """
 
         self.assert_file_validation_fails(
             'incorrect_parent_age', parents_too_old,
@@ -15,7 +15,7 @@ class BirthBeforeTest(GedcomTestCase):
             'correct_parent_age', parents_too_old)
 
     def test_sibling_spacing(self) -> None:
-        """ test sibling spacing """
+        """ test if siblings are too close in age but not twins """
 
         self.assert_file_validation_fails(
             'incorrect_sibling_spacing', sibling_spacing,
