@@ -1,4 +1,5 @@
 from datetime import date as Date
+from prettytable import PrettyTable
 from gedcom import GedcomRepository
 
 def marriage_after_14(repo: GedcomRepository):
@@ -8,24 +9,49 @@ def marriage_after_14(repo: GedcomRepository):
         marriage_date = family.marriage
         husband = family.husband
         wife = family.wife
-        husband_age = marriage_date - husband.birth
-        wife_age = marriage_date - wife.birth
+        husband_14th = husband.birth.replace(year=husband.birth.year+14)
+        wife_14th = wife.birth.replace(year=wife.birth.year+14)
 
         if not marriage_date:
             continue
 
-        # age 14 years is equivalent to 5110 days
-        if husband.birth and (husband_age.days < 5110):
+        if husband.birth and (husband_14th > marriage_date):
             invalid_marr_date_line_no = family.marriage_line_no
             errors.append(
                 f'ERROR US10: Individual({husband.id}) in Family({family.id}) married (at line {invalid_marr_date_line_no}) when under age 14.')
         
-        if wife.birth and (wife_age.days < 5110):
+        if wife.birth and (wife_14th > marriage_date):
             invalid_marr_date_line_no = family.marriage_line_no
             errors.append(
                 f'ERROR US10: Individual({wife.id}) in Family({family.id}) married (at line {invalid_marr_date_line_no}) when under age 14.')
     
     return errors
+
+def male_last_names(repo: GedcomRepository):
+    """ US16 All males in a family must share the same last name """
+    errors = []
+
+    for family in repo.families:
+        husband = family.husband
+        male_ln = (husband.name.split())[1]
+
+        if not husband:
+            continue
+        
+        if len(family.children) == 0:
+            continue
+
+        for child in family.children:
+            child_ln = (child.name.split())[1]
+            if child.sex and child.sex == 'M':
+                if child.name and child_ln != male_ln:
+                    errors.append(
+                        f'ERROR US16: In Family({family.id}), Son({child.id}) last name (at line {child.name_line_no}) does not match Father({husband.id}) last name (at line {husband.name_line_no}).'
+                    )
+                    
+    return errors
+
+    
 
 
 
