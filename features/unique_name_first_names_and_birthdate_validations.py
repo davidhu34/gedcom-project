@@ -13,8 +13,9 @@ def unique_name_and_birth(repo):
   for individual in repo.individuals:
     name = individual.name
     birth = individual.birth
-    combination: Tuple[str] = (name, f'{birth}')
-    individuals_by_combination[combination].append(individual)
+    if name and birth:
+      combination: Tuple[str] = (name, f'{birth}')
+      individuals_by_combination[combination].append(individual)
 
   for combo, individuals in individuals_by_combination.items():
     if len(individuals) > 1:

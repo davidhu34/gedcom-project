@@ -43,7 +43,11 @@ class GedcomDate(GedcomData):
         if not month:
             raise GedcomInvalidData('invalid day month')
 
-        self.date: Date = Date(year, month, day)
+        try: 
+            self.date: Date = Date(year, month, day)
+        except:
+            self.date = None
+            raise GedcomInvalidData('invalid date')
 
         return True
 

@@ -12,7 +12,7 @@ def age_and_age_at_death(repo):
     for individual in repo.individuals:
         individual_age = individual.age
 
-        if individual_age >= 150:
+        if individual_age and individual_age >= 150:
             errors.append(
                 f'ERROR US07: Individual({individual.id}) is older than 150 years old ({individual.age}) (at line {individual.birth_line_no})')
 
@@ -24,6 +24,6 @@ def order_siblings_by_age(repo):
     for family in repo.families:
         siblings = family.children
         if siblings:
-            sorted_siblings = sorted(siblings, key=lambda sibling: sibling.age * -1)
+            sorted_siblings = sorted(siblings, key=lambda sibling: sibling.age * -1 if sibling.age else 0)
             pretty_print_individuals(
                 f'Family({family.id} at line {family.line_no}) siblings ordered by age:', sorted_siblings)
