@@ -11,6 +11,7 @@ from features.age_less_than_150_years_old_and_siblings_order import age_and_age_
 from features.list_of_all_deceased_and_living_married import deceased_individual_list, living_married_list
 from features.marriage_after_14_and_male_last_names import marriage_after_14, male_last_names
 from features.parents_too_old import parents_too_old, sibling_spacing
+from features.multiple_births import siblings_born_at_same_time,too_many_siblings
 
 
 
@@ -41,4 +42,6 @@ if __name__ == "__main__":
         .print_individuals(deceased_individual_list) \
         .print_individuals(living_married_list)\
         .validate(sibling_spacing)\
-        .validate(parents_too_old)
+        .validate(parents_too_old)\
+        .validate(siblings_born_at_same_time)\
+        .validate(too_many_siblings)
