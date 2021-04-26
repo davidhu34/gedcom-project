@@ -11,6 +11,7 @@ from features.mariage_before_test import *
 from features.marriage_after_14_and_male_last_names_test import *
 from features.list_of_all_deceased_and_living_married_test import * 
 from features.parents_too_old import *
+from features.list_of_living_single_and_multiple_births_test import *
 
 if __name__ == "__main__":
     main(exit=False, verbosity=3)
