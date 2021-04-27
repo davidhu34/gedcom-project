@@ -2,7 +2,7 @@ from gedcom.testing import GedcomTestCase
 from features.list_of_all_deceased_and_living_married import deceased_individual_list, living_married_list
 
 
-class PrintTest(GedcomTestCase):
+class ListOfPrintTest(GedcomTestCase):
 
     def test_deceased_individual_list(self) -> None:
         ''' US29: test print all deceased individuals '''
