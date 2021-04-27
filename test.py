@@ -14,6 +14,7 @@ from features.parents_too_old_test import *
 from features.age_at_test import *
 from features.line_no_test import *
 from features.multiple_births_test import *
+from features.list_recent_births_deaths_test import *
 
 if __name__ == "__main__":
     main(exit=False, verbosity=3)
