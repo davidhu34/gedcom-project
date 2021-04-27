@@ -26,13 +26,16 @@ def parents_too_old(repo: GedcomRepository) -> List[str]:
   for family in repo.families:
     for child in family.children:
 
+      if not child.birth:
+        continue
+
       for wife in family.wifes:
-        if year_diff(wife.birth, child.birth) >= 60:
+        if wife.birth and year_diff(wife.birth, child.birth) >= 60:
             errors.append(
                 f'ERROR US12: Child({child.id}) is at least 60 years younger than their mother (at line {child.birth_line_no})')
 
       for husband in family.husbands:
-        if year_diff(husband.birth, child.birth) >= 80:
+        if husband.birth and year_diff(husband.birth, child.birth) >= 80:
             errors.append(
                 f'ERROR US12: Child({child.id}) is at least 80 years younger than their father (at line {child.birth_line_no})')
 
@@ -48,8 +51,9 @@ def sibling_spacing(repo: GedcomRepository) -> List[str]:
     children = family.children  # list of indis
     for child in children:
         for child2 in children:
-            if child is child2:
+            if child is child2 or not child.birth or not child2.birth:
               continue
+
             else:
               month_d = month_diff(child.birth, child2.birth)
               are_twins = abs((child2.birth - child.birth).days) < 2

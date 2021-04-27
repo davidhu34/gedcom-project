@@ -32,7 +32,8 @@ def id_list_display(id_list: Optional[List[str]] = []) -> str:
 def individuals_display(individuals: Optional[List[GedcomIndividual]] = []) -> str:
     ''' get individual list display '''
     # filter out non-existant individuals
-    id_list: List[str] = [f"'{individual.id}'" for individual in individuals if individual]
+    id_list: List[str] = [
+        f"'{individual.id}'" for individual in individuals if individual]
 
     return id_list_display(id_list)
 
@@ -70,8 +71,8 @@ def pretty_print_individuals(title: str, individuals: List[GedcomIndividual]) ->
             individual.id,
             individual.name,
             individual.sex,
-            f'{individual.birth}',
-            f'{individual.age}',
+            optional_string_display(individual.birth),
+            optional_string_display(individual.age),
             alive,
             optional_string_display(death_date),
             id_list_display(children_id_list),
@@ -103,7 +104,7 @@ def pretty_print_families(title: str, families: List[GedcomFamily]) -> None:
 
         family_table.add_row([
             family.id,
-            f'{family.marriage}',
+            optional_string_display(family.marriage),
             optional_string_display(family.divorce),
             family.husband_id,
             husband.name if husband else NA,

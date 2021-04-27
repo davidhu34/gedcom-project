@@ -15,7 +15,7 @@ from features.multiple_births import siblings_born_at_same_time,too_many_sibling
 from features.list_recent_births_deaths_test import list_recent_births, list_recent_deaths
 from features.list_of_living_single_and_multiple_births import  living_single_list, list_multiple_births
 from features.large_age_diff import large_age_diff
-
+from features.illegitimate_dates import illegitimate_dates
 
 if __name__ == "__main__":
     repo: GedcomRepository = prompt_repository_file()
@@ -51,4 +51,5 @@ if __name__ == "__main__":
         .print_individuals(list_recent_deaths) \
         .print_individuals(living_single_list) \
         .print_individuals(list_multiple_births) \
-        .validate(large_age_diff)
+        .validate(large_age_diff) \
+        .validate(illegitimate_dates)
