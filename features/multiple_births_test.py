@@ -9,8 +9,7 @@ class MultpleBirthsTest(GedcomTestCase):
 
         self.assert_file_validation_fails(
             'incorrect_siblings_born_at_same_time', siblings_born_at_same_time,
-            ["ERROR US12: Child(I01) is at least 60 years younger than their mother (at line 6)",
-             "ERROR US12: Child(I04) is at least 60 years younger than their mother (at line 33)"])
+            ["ERROR US14 at line 39: too many siblings born at once(0835-02-10) in family(F01)"])
 
         self.assert_file_validation_passes(
             'correct_siblings_born_at_same_time', siblings_born_at_same_time)
@@ -20,8 +19,7 @@ class MultpleBirthsTest(GedcomTestCase):
 
         self.assert_file_validation_fails(
             'incorrect_too_many_siblings', too_many_siblings,
-            ['ERROR US13: Child(I01) was born too close in time to another sibling(I02). (at line 6)',
-             "ERROR US13: Child(I02) was born too close in time to another sibling(I01). (at line 13)"])
+            ['ERROR US15 at line 172: too many siblings in family: (F01)'])
 
         self.assert_file_validation_passes(
             'correct_too_many_siblings', too_many_siblings)

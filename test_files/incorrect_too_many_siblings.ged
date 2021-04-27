@@ -14,7 +14,6 @@
 2 DATE 29 JAN 0810
 1 DEAT
 2 DATE 1 JAN 0845
-1 FAMS F01
 0 NOTE end of individual Carla Yaeger
 0 I03 INDI
 1 NAME Grisha /Yaeger/
@@ -33,7 +32,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa Ackerman
 0 I23 INDI
 1 NAME Mikasa /Ackerman/
@@ -41,7 +39,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa2 Ackerman
 0 I22 INDI
 1 NAME Mikasa3 /Ackerman/
@@ -49,7 +46,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa3 Ackerman
 0 I21 INDI
 1 NAME Mikas4 /Ackerman/
@@ -57,7 +53,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa4 Ackerman
 0 I20 INDI
 1 NAME Mikasa5 /Ackerman/
@@ -65,7 +60,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa5 Ackerman
 0 I09 INDI
 1 NAME Mikasa6 /Ackerman/
@@ -73,7 +67,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa6 Ackerman
 0 I10 INDI
 1 NAME Mikasa7 /Ackerman/
@@ -81,7 +74,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa7 Ackerman
 0 I11 INDI
 1 NAME Mikasa8 /Ackerman/
@@ -89,7 +81,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa8 Ackerman
 0 I12 INDI
 1 NAME Mikasa9 /Ackerman/
@@ -97,7 +88,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa9 Ackerman
 0 I13 INDI
 1 NAME Mikasa10 /Ackerman/
@@ -105,7 +95,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa10 Ackerman
 0 I14 INDI
 1 NAME Mikasa11 /Ackerman/
@@ -113,7 +102,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa11 Ackerman
 0 I15 INDI
 1 NAME Mikasa12 /Ackerman/
@@ -121,7 +109,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa12 Ackerman
 0 I16 INDI
 1 NAME Mikasa13 /Ackerman/
@@ -129,7 +116,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa13 Ackerman
 0 I17 INDI
 1 NAME Mikasa14 /Ackerman/
@@ -137,7 +123,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa14 Ackerman
 0 I18 INDI
 1 NAME Mikasa15 /Ackerman/
@@ -145,7 +130,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa15 Ackerman
 0 I19 INDI
 1 NAME Mikasa16 /Ackerman/
@@ -153,7 +137,6 @@
 1 BIRT
 2 DATE 10 FEB 0835
 1 FAMC F01
-1 FAMS F01
 0 NOTE end of individual Mikasa16 Ackerman
 0 I05 INDI
 1 NAME Dina /Fritz/
@@ -192,7 +175,21 @@
 1 HUSB I03
 1 WIFE I02
 1 CHIL I01
-1 CHIL I04
+1 CHIL I09
+1 CHIL I10
+1 CHIL I11
+1 CHIL I12
+1 CHIL I13
+1 CHIL I14
+1 CHIL I15
+1 CHIL I16
+1 CHIL I17
+1 CHIL I18
+1 CHIL I19
+1 CHIL I20
+1 CHIL I21
+1 CHIL I22
+1 CHIL I23
 0 NOTE end of family Paradis Yaeger
 0 F02 FAM
 1 MARR

@@ -13,6 +13,7 @@ from features.list_of_all_deceased_and_living_married_test import *
 from features.parents_too_old_test import *
 from features.age_at_test import *
 from features.line_no_test import *
+from features.multiple_births_test import *
 
 if __name__ == "__main__":
     main(exit=False, verbosity=3)
