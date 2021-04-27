@@ -16,12 +16,11 @@ def siblings_born_at_same_time(repo: GedcomRepository) -> List[str]:
             if child is child2:
               continue
             if child.birth ==child2.birth:
-                born_at_same_time=born_at_same_time+1
+                born_at_same_time+=1
             if born_at_same_time>5:
-
                 errors.append(
                 f'ERROR US14 at line {child.birth_line_no}: too many siblings born at once in family({family.id})')
-
+                return
   return errors
 
 
@@ -33,7 +32,7 @@ def too_many_siblings(repo: GedcomRepository) -> List[str]:
         child_count =0
         children = family.children  # list of indis
         for child in children:
-            child_count=child_count+1
+            child_count+=1
         if child_count>14:
             errors.append(f'ERROR US14 at line {child.birth_line_no}: too many siblings in family: ({family.id})')
 

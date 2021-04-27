@@ -35,7 +35,7 @@
 1 FAMC F01
 1 FAMS F01
 0 NOTE end of individual Mikasa Ackerman
-0 I05 INDI
+0 I23 INDI
 1 NAME Mikasa /Ackerman/
 1 SEX F
 1 BIRT
@@ -43,7 +43,7 @@
 1 FAMC F01
 1 FAMS F01
 0 NOTE end of individual Mikasa2 Ackerman
-0 I06 INDI
+0 I22 INDI
 1 NAME Mikasa3 /Ackerman/
 1 SEX F
 1 BIRT
@@ -51,7 +51,7 @@
 1 FAMC F01
 1 FAMS F01
 0 NOTE end of individual Mikasa3 Ackerman
-0 I07 INDI
+0 I21 INDI
 1 NAME Mikas4 /Ackerman/
 1 SEX F
 1 BIRT
@@ -59,7 +59,7 @@
 1 FAMC F01
 1 FAMS F01
 0 NOTE end of individual Mikasa4 Ackerman
-0 I08 INDI
+0 I20 INDI
 1 NAME Mikasa5 /Ackerman/
 1 SEX F
 1 BIRT
