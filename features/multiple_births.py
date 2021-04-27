@@ -10,6 +10,8 @@ def siblings_born_at_same_time(repo: GedcomRepository) -> List[str]:
         children=  family.children
         birth_day_dict= defaultdict(list)
         for child in children:
+            if not child.birth:
+                continue
             birth_day_key: str = f'{child.birth}'
             birth_day_dict[birth_day_key].append(child)
         for key, same_birth_children in birth_day_dict.items():

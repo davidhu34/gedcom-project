@@ -9,7 +9,7 @@ NA: str = 'NA'
 
 def optional_string_display(data: Any) -> str:
     ''' return string display of data '''
-    if not data:
+    if not data and data != 0:
         # return NA if data is invalid
         return NA
 
@@ -96,6 +96,7 @@ def pretty_print_families(title: str, families: List[GedcomFamily]) -> None:
         'Children',
     ]
     family_table: PrettyTable = PrettyTable(field_names=family_fields)
+    family_table._max_width = {"Children": 40}
 
     for family in families:
 

@@ -189,8 +189,11 @@ class GedcomIndividual(GedcomSubjectData):
         if not birth_date or not end_date:
             return None
 
-        this_birth_date: Date = Date(
-            end_date.year, birth_date.month, birth_date.day)
+        try:
+            this_birth_date: Date = Date(
+                end_date.year, birth_date.month, birth_date.day)
+        except:
+            return None
 
         return end_date.year - birth_date.year - \
             (1 if end_date < this_birth_date else 0)

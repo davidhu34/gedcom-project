@@ -11,7 +11,7 @@ def living_single_list(repo):
 
     for individual in repo.individuals:
 
-        if not individual.death and individual.age > 30 and not individual.spouse_of_list:
+        if not individual.death and individual.age and individual.age > 30 and not individual.spouse_of_list:
 
             living_single.append(individual)
 
@@ -29,6 +29,8 @@ def list_multiple_births(repo: GedcomRepository):
             List[GedcomIndividual]] = defaultdict(list)
 
         for child in children:
+            if not child.birth:
+                continue
             birth_day_key: str = f'{child.birth}'
             birth_day_dict[birth_day_key].append(child)
 
